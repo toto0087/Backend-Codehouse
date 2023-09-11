@@ -1,25 +1,32 @@
+const fs = require('fs');
+
 class ProductManaget {
 
-    constructor(){
-        this.products=[];
+    constructor(path) {
+        this.path = path;
     }
 
-    addProduct(product) {
-        if(!product.title && !product.descripcion && !product.price && !product.thumbnail && !product.code && !product.stock) {
-            console.log("Todos los campos son obligatorios");
-        } else {
-            const code = this.products.find(e => e.code == product.code);  
-            if (code) {
-                return "El codigo ya existe";
+    async addProduct(product) {
+        try { 
+            if(!product.title || !product.descripcion || !product.price || !product.thumbnail || !product.code || !product.stock) {
+                console.log("Todos los campos son obligatorios");
             } else {
-                const id = this.products.length ? this.products[this.products.length-1].id +1 : 1;
-                product.id = id;
+                const code = this.products.find(e => e.code == product.code);  
+                if (code) {
+                    return "El codigo ya existe";
+                } else {
+                    const id = this.products.length ? this.products[this.products.length-1].id +1 : 1;
+                    product.id = id;
+                }
             }
-        }
-    
-        this.products.push(product);
-        return "se agrego con exito";
+        
+            await fs.promises.writeFile(this.path, JSON.stringify([...products, product]));
 
+            return "se agrego con exito";
+        }
+        catch(error) {
+            return `Error al añadir el producto: ${error}`;
+        }    
     };
 
 
@@ -28,7 +35,7 @@ class ProductManaget {
     }
 
 
-    getProductById(id) {
+    async getProductById(id) {
         const product = this.products.find(product => product.id == id);
 
         if(product) {
@@ -44,22 +51,10 @@ class ProductManaget {
 
 // TEST  
 
-
-
-
 const productManager = new ProductManaget();
 
 // devuelve arreglo vacio
 console.log(productManager.getProducts());
-
-const product = {
-    title: "producto prueba",
-    description: "Este es un producto prueba",
-    price:200,
-    thumbnail: "Sin imagen",
-    code: "abc123",
-    stock: 25
-    }
 
 // se llama addProduct
 console.log(productManager.addProduct(product));
