@@ -1,6 +1,7 @@
 const fs = require('fs');
+const Product = require('./Product');
 
-class ProductManaget {
+class ProductManager {
 
     constructor(path) {
         this.path = path;
@@ -9,21 +10,18 @@ class ProductManaget {
     async addProduct(product) {
         try { 
             const products = await this.getProducts();
-            if(!products.title || !products.descripcion || !products.price || !products.thumbnail || !products.code || !products.stock) {
-                console.log("Todos los campos son obligatorios");
-            } else {
-                const code = products.find(e => e.code == product.code);  
-                if (code) {
-                    return "El codigo ya existe";
-                } else {
-                    const id = products.length ? products[this.products.length-1].id +1 : 1;
-                    product.id = id;
-                }
-            }
-        
+
+            const productCodeExist = products && products.find(p => p.code === product.getCode());
+
+            if (productCodeExist) return 'El Producto que intenta añadir tiene un código que ya existe';
+
+            const id = products.length ? products[products.length - 1].id + 1 : 1;
+            product.setId(id);
+                
             await fs.promises.writeFile(this.path, JSON.stringify([...products, product]));
 
-            return "se agrego con exito";
+            return 'Producto añadido correctamente';
+
         }
         catch(error) {
             return `Error al añadir el producto: ${error}`;
@@ -31,45 +29,69 @@ class ProductManaget {
     };
 
 
-    getProducts() {
-        return this.products
+    async getProducts() {
+        try {
+            if(fs.existsSync(this.path)){
+                const products = await fs.promises.readFile(this.path, 'utf-8');
+                return JSON.parse(products);
+            } else {
+                return [];
+            }
+        } catch (error) {
+            return `Error al leer el archivo: ${error}"`;
+        }
+    }
+
+    async updateProduct(id,updatedProduct) {
+        try {
+            const products = await this.getProducts();
+
+            const product = products.find(p => p.id === String(id));
+            if (!product) return 'El producto que intenta actualizar no existe';
+
+            if (product.code !== updatedProduct.getCode()) return 'No se puede modificar el código del producto';
+            product.title = updatedProduct.getTitle();
+            product.description = updatedProduct.getDescription();
+            product.price = updatedProduct.getPrice();
+            product.thumbnail = updatedProduct.getThumbnail();
+            product.stock = updatedProduct.getStock();
+            
+            return 'Producto actualizado correctamente'	;
+
+        } catch (error) {
+            return `Error al leer el archivo: ${error}"`;
+        }
     }
 
 
     async getProductById(id) {
-        const products = await this.getProducts();
-        const product = this.products.find(product => product.id == id);
+        try {    
+            const products = await this.getProducts();
+            const product = products.find(p => p.id === id);
+            return product || 'El producto no existe'
+        } catch(error) {
+            return `Error al obtener producto: ${error}`;
+        }    
+    }
 
-        if(product) {
-            return product;
-        } else {
-            return "no existe el producto";
+
+    
+    async deleteProduct(id) {
+        try {
+            let products = await this.getProducts();
+            if (!products) return 'No Hay productos cargados';
+
+            products = products.filter(p => p.id !== id);
+
+            await fs.promises.writeFile(this.path, JSON.stringify(products));
+
+            return 'Producto eliminado correctamente';
+        } catch (error) {
+            return `Error al eliminar el producto: ${error}`;
         }
     }
 
 }
 
 
-
-// TEST  
-
-const productManager = new ProductManaget();
-
-// devuelve arreglo vacio
-console.log(productManager.getProducts());
-
-// se llama addProduct
-console.log(productManager.addProduct(product));
-
-// devuelve arreglo con producto
-console.log(productManager.getProducts());
-
-// se llama addProduct con mismo codigo para que arroje error
-console.log(productManager.addProduct(product));
-
-// se evalua getProductById
-console.log(productManager.getProductById(1));
-
-// se evalua getProductById para que falle
-console.log(productManager.getProductById(2));
-
+module.exports = ProductManager;
