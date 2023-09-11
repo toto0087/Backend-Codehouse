@@ -8,14 +8,15 @@ class ProductManaget {
 
     async addProduct(product) {
         try { 
-            if(!product.title || !product.descripcion || !product.price || !product.thumbnail || !product.code || !product.stock) {
+            const products = await this.getProducts();
+            if(!products.title || !products.descripcion || !products.price || !products.thumbnail || !products.code || !products.stock) {
                 console.log("Todos los campos son obligatorios");
             } else {
-                const code = this.products.find(e => e.code == product.code);  
+                const code = products.find(e => e.code == product.code);  
                 if (code) {
                     return "El codigo ya existe";
                 } else {
-                    const id = this.products.length ? this.products[this.products.length-1].id +1 : 1;
+                    const id = products.length ? products[this.products.length-1].id +1 : 1;
                     product.id = id;
                 }
             }
@@ -36,6 +37,7 @@ class ProductManaget {
 
 
     async getProductById(id) {
+        const products = await this.getProducts();
         const product = this.products.find(product => product.id == id);
 
         if(product) {
