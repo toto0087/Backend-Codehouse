@@ -52,18 +52,18 @@ const test = async () => {
 
         // Obtenemos un producto por ID que no existe
         
-        console.log(await productManager.getProductById(50));
+        //console.log(await productManager.getProductById(50));
 
-        console.log(await productManager.updateProduct(1, product3));
+        //console.log(await productManager.updateProduct(1, product3));
 
         // Obtenemos los productos actualizados
-        console.log(await productManager.getProducts());
+        //console.log(await productManager.getProducts());
 
-        // Eliminamos un producto con ID 2
-        console.log(await productManager.deleteProduct(1));
+        // Eliminamos un producto con ID 1
+        //console.log(await productManager.deleteProduct(1));
 
         // Verificamos la eliminacion
-        console.log(await productManager.getProducts());
+        //console.log(await productManager.getProducts());
 }
 
 

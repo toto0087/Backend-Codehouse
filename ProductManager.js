@@ -46,7 +46,7 @@ class ProductManager {
         try {
             const products = await this.getProducts();
 
-            const product = products.find(p => p.id === String(id));
+            const product = products.find(p => p.id === Number(id));
             if (!product) return 'El producto que intenta actualizar no existe';
 
             if (product.code !== updatedProduct.getCode()) return 'No se puede modificar el código del producto';
@@ -55,6 +55,8 @@ class ProductManager {
             product.price = updatedProduct.getPrice();
             product.thumbnail = updatedProduct.getThumbnail();
             product.stock = updatedProduct.getStock();
+
+            await fs.promises.writeFile(this.path, JSON.stringify(products));
             
             return 'Producto actualizado correctamente'	;
 
