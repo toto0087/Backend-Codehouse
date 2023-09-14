@@ -41,16 +41,16 @@ const product3 = new Product({
 const test = async () => {
 
     // Obtiene un arreglo vacio si no hay productos
-    console.log(await productManager.getProducts());
-        // Agregamos productos
+
+        // Agregamos prods
         console.log(await productManager.addProduct(product1));
         console.log(await productManager.addProduct(product2));
     
         // Obtenemos los productos agregados
-        //console.log(await productManager.getProducts());
+        console.log(await productManager.getProducts());
 
 
-        // Obtenemos un producto por ID que no existe
+        // ID No existente
         
         //console.log(await productManager.getProductById(50));
 
@@ -59,7 +59,7 @@ const test = async () => {
         // Obtenemos los productos actualizados
         //console.log(await productManager.getProducts());
 
-        // Eliminamos un producto con ID 1
+
         //console.log(await productManager.deleteProduct(1));
 
         // Verificamos la eliminacion
