@@ -7,16 +7,22 @@ class Product {
     #code;
     #thumbnail;
     #description;
+    #status
+    #category
 
 
-    constructor( title, description, stock, price, code, thumbnail ) {
+    constructor( title, description, stock, price, code, thumbnail,category ) {
         this.#title = title;
         this.#description = description;
         this.#stock = stock;
         this.#price = price;
         this.#code = code;
         this.#thumbnail = thumbnail;
+        this.#status = true
+        this.#category = category
     }
+
+
 
     getId() {
         return this.#id;
@@ -60,6 +66,20 @@ class Product {
     setDescription(description) {
         this.#description = description;
     }
+    getCategory() {
+        return this.#category;
+    }
+    setCategory() {
+        this.#category = this.#category;
+    }
+    getStatus() {
+        return this.#status;
+    }
+    setStatus() {
+        this.#status = this.#status;
+    }
+
+
     toJSON() {
         return {
             id: this.#id,
@@ -68,7 +88,8 @@ class Product {
             stock: this.#stock,
             price: this.#price,
             code: this.#code,
-            thumbnail: this.#thumbnail
+            thumbnail: this.#thumbnail,
+            category: this.#category
         }
     }
 }

@@ -45,16 +45,19 @@ class ProductManager {
     async updateProduct(id,updatedProduct) {
         try {
             const products = await this.getProducts();
-
             const product = products.find(p => p.id === Number(id));
-            if (!product) return 'El producto que intenta actualizar no existe';
 
+            if (!product) return 'El producto que intenta actualizar no existe';
+        
             if (product.code !== updatedProduct.getCode()) return 'No se puede modificar el código del producto';
-            product.title = updatedProduct.getTitle();
-            product.description = updatedProduct.getDescription();
-            product.price = updatedProduct.getPrice();
-            product.thumbnail = updatedProduct.getThumbnail();
-            product.stock = updatedProduct.getStock();
+
+            if (product.title) product.title = updatedProduct.title; 
+            if (product.description) product.description = updatedProduct.description;
+            if (product.price) product.price = updatedProduct.price;
+            if (product.thumbnail) product.thumbnail = updatedProduct.thumbnail;
+            if (product.stock) product.stock = updatedProduct.stock;
+            if (product.category) product.category = updatedProduct.category;
+            if (product.status) product.status = updatedProduct.status;
 
             await fs.promises.writeFile(this.path, JSON.stringify(products));
             

@@ -1,5 +1,4 @@
 import {Router} from "express"
-
 const ProductManager = require('./ProductManager'); // Importa el archivo ProductManager.js
 const path = require('path');
 
@@ -10,7 +9,7 @@ const router = Router();
 
 // Define una ruta para obtener todos los productos
 
-app.get('/products', async (req, res) => {
+app.get('/', async (req, res) => {
     const {limit} = req.query
     try {
         let products = await productManager.getProducts();
@@ -23,15 +22,47 @@ app.get('/products', async (req, res) => {
     }
 });
 
-app.get('/products/:id', async (req, res) => {
+app.get('/:id', async (req, res) => {
     const {id} = req.params
     console.log(id)
     try {
         const product = await productManager.getProductById(id);
         res.status(200).json(product); 
-        console.log(product)
     } catch (error) {
         res.status(404).json("Producto no encontrado"); 
+    }
+});
+
+app.post('/', async (req, res) => {
+    try {
+        const prod = req.body
+        const product = await productManager.addProduct(prod);
+        res.status(200).json(product); 
+        console.log(product)
+    } catch (error) {
+        res.status(400).json("Producto no publicado"); 
+    }
+});
+
+app.put('/:id', async (req, res) => {
+    try {
+        const {id} = req.params
+        const prod = req.body
+        const product = await productManager.updateProduct(id,prod);
+        res.status(200).json(product); 
+        console.log(product)
+    } catch (error) {
+        res.status(400).json("Producto no editado"); 
+    }
+});
+
+app.delete('/:id', async (req, res) => {
+    try {
+        const {id} = req.params
+        const product = await productManager.deleteProduct(id);
+        res.status(200).json(product);
+    } catch (error) {
+        res.status(400).json("Producto no eliminado"); 
     }
 });
 
