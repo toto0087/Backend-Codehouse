@@ -31,6 +31,7 @@ class ProductManager {
 
     async getProducts() {
         try {
+            console.log(fs.existsSync(this.path));
             if(fs.existsSync(this.path)){
                 const products = await fs.promises.readFile(this.path, 'utf-8');
                 return JSON.parse(products);
@@ -73,7 +74,7 @@ class ProductManager {
         try {    
             const products = await this.getProducts();
             const product = products.find(p => p.id == id);
-            return product || 'El producto no existe'
+            return product
         } catch(error) {
             return `Error al obtener producto: ${error}`;
         }    

@@ -1,15 +1,15 @@
-import {Router} from "express"
-const ProductManager = require('./ProductManager'); // Importa el archivo ProductManager.js
+const {Router} = require("express")
+const ProductManager = require('../ProductManager'); // Importa el archivo ProductManager.js
 const path = require('path');
 
 // Crea una instancia de ProductManager
-const productManager = new ProductManager(path.resolve(__dirname,"productos.json"));
+const productManager = new ProductManager(path.resolve(__dirname,"../productos.json"));
 
 const router = Router();
 
 // Define una ruta para obtener todos los productos
 
-app.get('/', async (req, res) => {
+router.get('/', async (req, res) => {
     const {limit} = req.query
     try {
         let products = await productManager.getProducts();
@@ -22,7 +22,7 @@ app.get('/', async (req, res) => {
     }
 });
 
-app.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
     const {id} = req.params
     console.log(id)
     try {
@@ -33,7 +33,7 @@ app.get('/:id', async (req, res) => {
     }
 });
 
-app.post('/', async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const prod = req.body
         const product = await productManager.addProduct(prod);
@@ -44,7 +44,7 @@ app.post('/', async (req, res) => {
     }
 });
 
-app.put('/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
     try {
         const {id} = req.params
         const prod = req.body
@@ -56,7 +56,7 @@ app.put('/:id', async (req, res) => {
     }
 });
 
-app.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         const {id} = req.params
         const product = await productManager.deleteProduct(id);
@@ -66,4 +66,4 @@ app.delete('/:id', async (req, res) => {
     }
 });
 
-export default router;
+module.exports = router;

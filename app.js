@@ -1,5 +1,5 @@
-import productsRouter from "./router/products.router"
-import cartsRotuer from "./router/carts.router"
+const productsRouter = require('./router/products.router'); 
+const cartsRotuer = require('./router/carts.router'); 
 
 const express = require('express');
 const app = express();
