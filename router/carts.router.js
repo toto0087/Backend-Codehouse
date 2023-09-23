@@ -15,7 +15,6 @@ router.post('/', async (req, res) => {
         const cart = await cartManager.addCart(); 
         res.json({ message: 'Nuevo carrito creado', carrito: cart });
     } catch (error) {
-        console.log(error);
         res.status(400).json("Carrito no agregado"); 
     }
 });
@@ -39,7 +38,6 @@ router.post('/:cid/product/:pid', async (req, res) => {
         const cart = await cartManager.addProdCart(carritoId,productoId);
         res.status(200).json(cart); 
     } catch (error) {
-        console.log(error)
         res.status(404).json("Producto no agregado en carrito"); 
     }
   });

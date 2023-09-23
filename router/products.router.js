@@ -24,7 +24,6 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     const {id} = req.params
-    console.log(id)
     try {
         const product = await productManager.getProductById(id);
         res.status(200).json(product); 
@@ -38,7 +37,7 @@ router.post('/', async (req, res) => {
         const prod = req.body
         const product = await productManager.addProduct(prod);
         res.status(200).json(product); 
-        console.log(product)
+
     } catch (error) {
         res.status(400).json("Producto no publicado"); 
     }
@@ -50,7 +49,7 @@ router.put('/:id', async (req, res) => {
         const prod = req.body
         const product = await productManager.updateProduct(id,prod);
         res.status(200).json(product); 
-        console.log(product)
+
     } catch (error) {
         res.status(400).json("Producto no editado"); 
     }

@@ -65,7 +65,7 @@ class CartManager {
         
         // Verifica si el producto ya está en el carrito
         const existingProduct = carrito.products.find(product => product.id == productId);
-        console.log(existingProduct)
+
       
         if (existingProduct) {
           // Si el producto ya existe, incrementa la cantidad

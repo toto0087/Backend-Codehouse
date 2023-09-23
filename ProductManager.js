@@ -31,7 +31,7 @@ class ProductManager {
 
     async getProducts() {
         try {
-            console.log(fs.existsSync(this.path));
+            
             if(fs.existsSync(this.path)){
                 const products = await fs.promises.readFile(this.path, 'utf-8');
                 return JSON.parse(products);
