@@ -9,6 +9,18 @@ class ProductManager {
 
     async addProduct(product) {
         try { 
+
+
+            if (!product.title) return 'El producto debe tener un título';
+            if (!product.description) return 'El producto debe tener una descripción';
+            if (!product.price) return 'El producto debe tener un precio';
+            if (!product.thumbnails) return 'El producto debe tener un thumbnail';
+            if (!product.stock) return 'El producto debe tener un stock';
+            if (!product.category) return 'El producto debe tener una categoria';
+            if (!product.code) return 'El producto debe tener un código';
+            if (product.stock < 0) return 'El stock no puede ser negativo';
+            if (product.price < 0) return 'El precio no puede ser negativo';
+
             const products = await this.getProducts();
 
             const productCodeExist = products && products.find(p => p.code === product.getCode());
