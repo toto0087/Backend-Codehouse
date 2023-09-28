@@ -1,5 +1,5 @@
 const {Router} = require("express")
-const CartManager = require('../CartManager'); 
+const CartManager = require('../src/CartManager'); 
 const path = require('path');
 
 
@@ -13,7 +13,7 @@ const cartManager = new CartManager(path.resolve(__dirname,"../cart.json"));
 router.post('/', async (req, res) => {
     try { 
         const cart = await cartManager.addCart(); 
-        res.json({ message: 'Nuevo carrito creado', carrito: cart });
+        res.status(200).json(cart); 
     } catch (error) {
         res.status(400).json("Carrito no agregado"); 
     }

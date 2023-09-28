@@ -23,7 +23,6 @@ class CartManager {
         }
     }
 
-
     async getcartById(id) {
         try {    
             const carts = await this.getCarts();
@@ -35,15 +34,18 @@ class CartManager {
     }
 
     async addCart() {
-
-        const carts = await this.getCarts();
-        const id = carts.length ? carts[carts.length - 1].id + 1 : 1;
-        const nuevoCarrito = {
-        id: id, 
-        products: [] // Inicialmente, no hay productos en el carrito
-        };
-
-        await fs.promises.writeFile(this.path, JSON.stringify([...carts, nuevoCarrito]));
+        try {
+            const carts = await this.getCarts();
+            const id = carts.length ? carts[carts.length - 1].id + 1 : 1;
+            const nuevoCarrito = {
+            id: id, 
+            products: [] // Inicialmente, no hay productos en el carrito
+            };
+    
+            await fs.promises.writeFile(this.path, JSON.stringify([...carts, nuevoCarrito]));
+        } catch (error) {
+            return `Error al obtener el carrito: ${error}`;
+        }
         
     }
 
@@ -77,12 +79,10 @@ class CartManager {
             quantity: 1
           });
         }
-
         
         await fs.promises.writeFile(this.path, JSON.stringify(carritos));
         return 'Producto añadido correctamente';
       
-        
     }
 }
 

@@ -1,5 +1,5 @@
 const {Router} = require("express")
-const ProductManager = require('../ProductManager'); // Importa el archivo ProductManager.js
+const ProductManager = require('../src/ProductManager'); // Importa el archivo ProductManager.js
 const path = require('path');
 
 // Crea una instancia de ProductManager

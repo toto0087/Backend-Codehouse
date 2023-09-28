@@ -10,7 +10,6 @@ class ProductManager {
     async addProduct(product) {
         try { 
 
-
             if (!product.title) return 'El producto debe tener un título';
             if (!product.description) return 'El producto debe tener una descripción';
             if (!product.price) return 'El producto debe tener un precio';
