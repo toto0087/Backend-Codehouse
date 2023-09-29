@@ -1,9 +1,6 @@
-const {Router} = require("express")
-const ProductManager = require('../src/ProductManager'); // Importa el archivo ProductManager.js
-const path = require('path');
+import {Router} from "express"
 
-// Crea una instancia de ProductManager
-const productManager = new ProductManager(path.resolve(__dirname,"../productos.json"));
+import ProductManager from "../impl/ProductManager.js"; // Importa el archivo ProductManager.js
 
 const router = Router();
 
@@ -12,7 +9,7 @@ const router = Router();
 router.get('/', async (req, res) => {
     const {limit} = req.query
     try {
-        let products = await productManager.getProducts();
+        let products = await ProductManager.getProducts();
         if(limit) {
             products = products.slice(0 , limit) 
         }
@@ -25,7 +22,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     const {id} = req.params
     try {
-        const product = await productManager.getProductById(id);
+        const product = await ProductManager.getProductById(id);
         res.status(200).json(product); 
     } catch (error) {
         res.status(404).json("Producto no encontrado"); 
@@ -35,7 +32,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const prod = req.body
-        const product = await productManager.addProduct(prod);
+        const product = await ProductManager.addProduct(prod);
         res.status(200).json(product); 
 
     } catch (error) {
@@ -47,7 +44,7 @@ router.put('/:id', async (req, res) => {
     try {
         const {id} = req.params
         const prod = req.body
-        const product = await productManager.updateProduct(id,prod);
+        const product = await ProductManager.updateProduct(id,prod);
         res.status(200).json(product); 
 
     } catch (error) {
@@ -58,11 +55,11 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     try {
         const {id} = req.params
-        const product = await productManager.deleteProduct(id);
+        const product = await ProductManager.deleteProduct(id);
         res.status(200).json(product);
     } catch (error) {
         res.status(400).json("Producto no eliminado"); 
     }
 });
 
-module.exports = router;
+export default router;

@@ -1,8 +1,7 @@
-const fs = require('fs');
-const Product = require('./Product');
-const path = require("path")
-const ProductManager = require('./ProductManager');
-const productManager = new ProductManager(path.resolve(__dirname,"./productos.json"));
+import fs from "fs"
+import path from "path"
+import ProductManager from "../impl/ProductManager.js";
+import __dirname from "../utils.js";
 
 class CartManager { 
 
@@ -51,15 +50,16 @@ class CartManager {
 
 
     async addProdCart(carritoId,productId) {
+        
         const carritos = await this.getCarts();
         const carrito = carritos.find(carrito => carrito.id == carritoId);
-  
+        
         if (!carrito) {
           return res.status(404).json({ error: 'Carrito no encontrado' });
         }
     
         // Verifica si existe el producto que queremos agregar
-        const productExist = await productManager.getProductById(productId);
+        const productExist = await ProductManager.getProductById(productId);
 
         if (!productExist) {
             return 'El producto que desea agregar no existe' 
@@ -87,5 +87,5 @@ class CartManager {
 }
 
 
-module.exports = CartManager;
+export default new CartManager(path.resolve(__dirname,"./db/cart.json"))
 

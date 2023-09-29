@@ -1,5 +1,7 @@
-const fs = require('fs');
-const Product = require('./Product');
+import fs from "fs"
+import path from "path"
+import __dirname from "../utils.js";
+import { log } from "console";
 
 class ProductManager {
 
@@ -42,7 +44,7 @@ class ProductManager {
 
     async getProducts() {
         try {
-            
+            console.log(this.path);
             if(fs.existsSync(this.path)){
                 const products = await fs.promises.readFile(this.path, 'utf-8');
                 return JSON.parse(products);
@@ -111,4 +113,4 @@ class ProductManager {
 }
 
 
-module.exports = ProductManager;
+export default new ProductManager(path.resolve(__dirname,"./db/productos.json"))
