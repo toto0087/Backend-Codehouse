@@ -36,8 +36,12 @@ const httpServer = app.listen(port, () => {
 });
 
 // Websocket
-const socketServer = new Server(httpServer);
+export const socketServer = new Server(httpServer);
 
 socketServer.on("connection",(socket)=>{
   console.log(`cliente conectado ${socket.id}`);
+
+
+
+  socket.on("disconnect", ()=> console.log(`Se desconecto el cliente ${socket.id}`))
 })
