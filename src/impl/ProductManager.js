@@ -1,6 +1,7 @@
 import fs from "fs"
 import path from "path"
 import __dirname from "../utils.js";
+import { Socket } from "socket.io";
 
 
 class ProductManager {
