@@ -26,7 +26,7 @@ socket.on("products", (data) => {
 
 });
 
-socketServer.on("newProd",(data) => {
+socket.on("newProd",(data) => {
 
     const id = document.getElementById("products");
 
@@ -51,7 +51,7 @@ socketServer.on("newProd",(data) => {
 
 })
 
-socketServer.on("deleteProd",(data) => {
+socket.on("deleteProd",(data) => {
 
     const productId = data.id; 
 
@@ -66,3 +66,4 @@ socketServer.on("deleteProd",(data) => {
     }
 
 })
+
