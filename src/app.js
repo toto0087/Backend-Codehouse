@@ -2,6 +2,7 @@ import productsRouter from "./router/products.router.js"
 import cartsRotuer from "./router/carts.router.js"
 import viewsRouter from "./router/viewsRouter.js"
 import __dirname from "./utils.js";
+import "./db/config.js"
 
 import express from "express";
 import { Server } from "socket.io";
