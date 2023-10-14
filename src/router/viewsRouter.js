@@ -1,6 +1,6 @@
 import {Router} from "express"
 const router = Router();
-import ProductManager from "../impl/ProductManager.js";
+import ProductManager from "../dao/fileSystem/ProductManager.js";
 import { socketServer } from "../app.js";
 
 
@@ -17,7 +17,7 @@ router.get('/realtimeproducts', async (req, res) => {
     const products = await ProductManager.getProducts()
 
     socketServer.on("connection", socket => {
-        socket.emit("products",products)
+        socket.emit("getProducts",products)
     })
 
     res.render("realtimeproducts",{style:"realtimeproducts.css"})

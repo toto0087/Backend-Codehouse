@@ -1,69 +1,55 @@
 
 
-const socket = io()
+const socketClient = io();
+const form = document.getElementById("addProductForm");
+const inputTitle = document.getElementById("productTitle");
+const inputDescription = document.getElementById("productDescription");
+const inputPrice = document.getElementById("productPrice");
+const inputCode = document.getElementById("productCode");
+const inputStock = document.getElementById("productStock");
+const table = document.getElementById("productTable");
+const tableBody = document.getElementById("productTableBody");
 
-socket.on("products", (data) => {
-    const id = document.getElementById("products");
+form.onsubmit = (e) => {
+  e.preventDefault();
+  const product = {
+    title: inputTitle.value,
+    description: inputDescription.value,
+    price: inputPrice.value,
+    code: inputCode.value,
+    stock: inputStock.value
+  };
+  socketClient.emit("createProduct", product);
+};
 
-    // Utiliza map en lugar de forEach para crear un array de nodos
-    const productNodes = data.map(element => {
-        const div = document.createElement("div");
-        div.setAttribute('data-id', data.id);
-        div.innerHTML = `
-            <div>
-                <div><p>${element.title}</p></div>
-                <div><p>${element.description}</p></div>
-                <div><p>${element.price}</p></div>
-            </div>
-        `;
-        return div; 
-    });
 
-    // Agrega los nodos al elemento con el id "products"
-    productNodes.forEach(node => {
-        id.appendChild(node);
-    });
 
+socketClient.on("productCreated", (product) => {
+  const { id, title, description, price, code, stock } = product;
+  const row = `
+    <tr>
+    <td>${id}</td>
+            <td>${title}</td>
+            <td>${description}</td>
+            <td>${price}</td>
+            <td>${code}</td>
+            <td>${stock}</td>
+        </tr>`;
+  table.innerHTML += row;
 });
 
-socket.on("newProd",(data) => {
-
-    const id = document.getElementById("products");
-
-    // Utiliza map en lugar de forEach para crear un array de nodos
-    const productNodes = data.map(element => {
-        const div = document.createElement("div");
-        div.setAttribute('data-id', data.id);
-        div.innerHTML = `
-            <div>
-                <div><p>${element.title}</p></div>
-                <div><p>${element.description}</p></div>
-                <div><p>${element.price}</p></div>
-            </div>
-        `;
-        return div;
-    });
-
-    // Agrega los nodos al elemento con el id "products"
-    productNodes.forEach(node => {
-        id.appendChild(node);
-    });
-
-})
-
-socket.on("deleteProd",(data) => {
-
-    const productId = data.id; 
-
-    const productsContainer = document.getElementById("products");
-
-    // Encuentra el elemento con el ID igual al ID del producto eliminado
-    const productElement = document.getElementById(productId);
-    
-    if (productElement) {
-        // Si se encuentra el elemento, elimínalo del DOM
-        productsContainer.removeChild(productElement);
-    }
-
-})
-
+socketClient.on("getProducts", (products) => {
+  const rows = products.map((product) => {
+    const { id, title, description, price, code, stock } = product;
+    return `
+            <tr>
+                <td>${id}</td>
+                <td>${title}</td>
+                <td>${description}</td>
+                <td>${price}</td>
+                <td>${code}</td>
+                <td>${stock}</td>
+            </tr>`;
+  });
+  table.innerHTML += rows.join("");
+});

@@ -41,5 +41,11 @@ export const socketServer = new Server(httpServer);
 socketServer.on("connection",(socket)=>{
   console.log(`cliente conectado ${socket.id}`);
 
+  socket.on("createProduct", async (prod) => {
+    const newProduct = await ProductManager.addProduct(prod);
+    socket.emit('productCreated', newProduct);
+  });
+
+
   socket.on("disconnect", ()=> console.log(`Se desconecto el cliente ${socket.id}`))
 })

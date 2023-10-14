@@ -1,6 +1,6 @@
 import fs from "fs"
 import path from "path"
-import __dirname from "../utils.js";
+import __dirname from "../../utils.js";
 import { Socket } from "socket.io";
 
 
@@ -34,7 +34,8 @@ class ProductManager {
                 
             await fs.promises.writeFile(this.path, JSON.stringify([...products, product]));
 
-            return 'Producto añadido correctamente';
+            return product;
+            
 
         }
         catch(error) {

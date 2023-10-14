@@ -1,7 +1,7 @@
 import fs from "fs"
 import path from "path"
-import ProductManager from "../impl/ProductManager.js";
-import __dirname from "../utils.js";
+import ProductManager from "./ProductManager.js";
+import __dirname from "../../utils.js";
 
 class CartManager { 
 

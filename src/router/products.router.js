@@ -1,6 +1,6 @@
 import {Router} from "express"
-import { socketServer } from "../app.js";
-import ProductManager from "../impl/ProductManager.js"; // Importa el archivo ProductManager.js
+
+import ProductManager from "../dao/fileSystem/ProductManager.js"; // Importa el archivo ProductManager.js
 
 const router = Router();
 
@@ -33,7 +33,6 @@ router.post('/', async (req, res) => {
     try {
         const prod = req.body
         const product = await ProductManager.addProduct(prod);
-        socketServer.emit('newProd', product);
         res.status(200).json(product); 
 
     } catch (error) {
@@ -57,7 +56,6 @@ router.delete('/:id', async (req, res) => {
     try {
         const {id} = req.params
         const product = await ProductManager.deleteProduct(id);
-        socketServer.emit('deleteProd', product);
         res.status(200).json(product);
     } catch (error) {
         res.status(400).json("Producto no eliminado"); 
