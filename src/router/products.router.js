@@ -1,6 +1,6 @@
 import {Router} from "express"
 
-import ProductManager from "../dao/fileSystem/ProductManager.js"; // Importa el archivo ProductManager.js
+import {productsManager} from "../dao/db/productsManager.js"; // Importa el archivo ProductManager.js
 
 const router = Router();
 
@@ -9,7 +9,7 @@ const router = Router();
 router.get('/', async (req, res) => {
     const {limit} = req.query
     try {
-        let products = await ProductManager.getProducts();
+        let products = await productsManager.findAll();
         if(limit) {
             products = products.slice(0 , limit) 
         }
@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     const {id} = req.params
     try {
-        const product = await ProductManager.getProductById(id);
+        const product = await productsManager.findById(id);
         res.status(200).json(product); 
     } catch (error) {
         res.status(404).json("Producto no encontrado"); 
@@ -32,7 +32,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const prod = req.body
-        const product = await ProductManager.addProduct(prod);
+        const product = await productsManager.create(prod);
         res.status(200).json(product); 
 
     } catch (error) {
@@ -44,7 +44,7 @@ router.put('/:id', async (req, res) => {
     try {
         const {id} = req.params
         const prod = req.body
-        const product = await ProductManager.updateProduct(id,prod);
+        const product = await productsManager.update(id,prod);
         res.status(200).json(product); 
 
     } catch (error) {
@@ -55,7 +55,7 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     try {
         const {id} = req.params
-        const product = await ProductManager.deleteProduct(id);
+        const product = await productsManager.delete(id);
         res.status(200).json(product);
     } catch (error) {
         res.status(400).json("Producto no eliminado"); 
