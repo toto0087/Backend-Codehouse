@@ -7,6 +7,7 @@ import "./db/config.js"
 import express from "express";
 import { Server } from "socket.io";
 import handlebars from "express-handlebars";
+import { productsManager } from "./dao/db/productsManager.js";
 const app = express();
 const port = 3000; 
 
@@ -43,7 +44,7 @@ socketServer.on("connection",(socket)=>{
   console.log(`cliente conectado ${socket.id}`);
 
   socket.on("createProduct", async (prod) => {
-    const newProduct = await ProductManager.addProduct(prod);
+    const newProduct = await productsManager.create(prod);
     socket.emit('productCreated', newProduct);
   });
 

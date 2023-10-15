@@ -9,7 +9,6 @@ const cartsSchema = new Schema({
         },
         quantity: {
             type: Number,
-            ref: 'Product Quantity',
             required: true
         }
     }],

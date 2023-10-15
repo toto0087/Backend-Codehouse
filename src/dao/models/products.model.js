@@ -7,7 +7,7 @@ const productsSchema = new Schema({
         trim: true,
     },
     description: {
-        type: Number,
+        type: String,
         required: true,
     },
     stock: {
@@ -25,12 +25,12 @@ const productsSchema = new Schema({
     },
     thumbnail: {
         type: String,
-        required: true,
+        required: false,
     },
     category: {
         type: String,
-        required: true
+        required: false
     }
 });
 
-export const productsModel = mongoose.model('Products', productsSchema);
+export const productsModel = model('Products', productsSchema);
