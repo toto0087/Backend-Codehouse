@@ -1,5 +1,3 @@
-
-
 const socketClient = io();
 const form = document.getElementById("addProductForm");
 const inputTitle = document.getElementById("productTitle");

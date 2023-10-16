@@ -1,6 +1,7 @@
 import productsRouter from "./router/products.router.js" 
 import cartsRotuer from "./router/carts.router.js"
 import viewsRouter from "./router/viewsRouter.js"
+import chatRouter from "./router/chatRouter.js"
 import __dirname from "./utils.js";
 import "./db/config.js"
 
@@ -15,6 +16,7 @@ const port = 3000;
 app.use("/api/products",productsRouter)
 app.use("/api/carts",cartsRotuer)
 app.use('/', viewsRouter)
+app.use('/api/chat', chatRouter)
 
 
 // Inicializacion de motor de plantillas
@@ -40,8 +42,21 @@ const httpServer = app.listen(port, () => {
 // Websocket
 export const socketServer = new Server(httpServer);
 
+
+const messages = []
+
+
 socketServer.on("connection",(socket)=>{
   console.log(`cliente conectado ${socket.id}`);
+
+  socket.on("newUser", (user) => {
+    socket.broadcast.emit("NewUserBroadcast", user);
+  });
+
+  socket.on("message", info => {
+    messages.push(info)
+    socketServer.emit("chat",messages)
+  });
 
   socket.on("createProduct", async (prod) => {
     const newProduct = await productsManager.create(prod);

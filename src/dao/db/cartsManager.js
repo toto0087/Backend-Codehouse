@@ -1,10 +1,10 @@
-import {cartsManager} from '../models/carts.model.js';
+import {cartsModel} from '../models/carts.model.js';
 import BaseManager from './baseManager.js';
 import { productsManager } from './productsManager.js';
 
 class CartsManager extends BaseManager{
     constructor() {
-        super(cartsManager);
+        super(cartsModel);
     }
 
 
