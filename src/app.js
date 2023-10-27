@@ -56,6 +56,7 @@ socketServer.on("connection",(socket)=>{
   socket.on("message", info => {
     messages.push(info)
     socketServer.emit("chat",messages)
+    
   });
 
   socket.on("createProduct", async (prod) => {

@@ -7,13 +7,10 @@ const router = Router();
 // Define una ruta para obtener todos los productos
 
 router.get('/', async (req, res) => {
-    const {limit} = req.query
+
     try {
-        let products = await productsManager.findAll();
-        if(limit) {
-            products = products.slice(0 , limit) 
-        }
-        res.status(200).json(products); 
+        let products = await productsManager.findAll(req.query);
+        res.status(200).json(products.payload); 
     } catch (error) {
         res.status(404).json("Prods no encontrados"); 
     }

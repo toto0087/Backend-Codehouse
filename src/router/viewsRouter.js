@@ -6,7 +6,7 @@ import { productsManager } from "../dao/db/productsManager.js";
 
 router.get('/', async (req, res) => {
 
-    //const products = await productsManager.getProducts()
+    const products = await productsManager.getProducts()
 
     res.render("home",{style:"home.css",products})
 });

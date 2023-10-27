@@ -37,4 +37,35 @@ router.post('/:cid/product/:pid', async (req, res) => {
     }
   });
 
+router.put('/:cid', async (req, res) => {
+    const carritoId = parseInt(req.params.cid);
+    try {
+        const cart = await cartsManager.update(carritoId,req.body);
+        res.status(200).json(cart); 
+    } catch (error) {
+        res.status(404).json("Carrito no actualizado"); 
+    }
+  });
+
+router.put('/:cid/product/:pid', async (req, res) => {
+    const carritoId = parseInt(req.params.cid);
+    const productoId = parseInt(req.params.pid);
+    try {
+        const cart = await cartsManager.updateProdCart(carritoId,productoId,req.body);
+        res.status(200).json(cart); 
+    } catch (error) {
+        res.status(404).json("Producto no actualizado en carrito"); 
+    }
+});
+
+router.delete('/cid', async (req, res) => { 
+    const carritoId = parseInt(req.params.cid);
+    try {
+        const cart = await cartsManager.delete(carritoId);
+        res.status(200).json(cart); 
+    } catch (error) {
+        res.status(404).json("Carrito no eliminado"); 
+    }
+})
+
 export default router
