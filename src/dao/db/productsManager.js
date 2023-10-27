@@ -17,7 +17,7 @@ class ProductManager extends BaseManager{
         const query = stock ? {stock: {$gt: stock}} : null;
 
         const options = {
-            limit: limit ? limit : 5, // resultados por pagina
+            limit: limit ? limit : 1, // resultados por pagina
             page: page ? page : 1, // pagina  actual
             sort: (sort === 'asc' || sort === 'desc') ? {price: sort == 'asc' ? 1 : -1 }: null,
         }

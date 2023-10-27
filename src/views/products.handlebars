@@ -1,0 +1,65 @@
+
+
+
+<style>
+    .card {
+        width: 18rem;
+        margin: 1rem;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .card-text {
+        margin-bottom: 0.5rem;
+    }
+
+    .price {
+        font-weight: bold;
+    }
+
+    .code {
+        font-style: italic;
+    }
+
+    .stock {
+        color: #888;
+    }
+
+    .btn {
+        display: block;
+        margin-top: 1rem;
+    }
+</style>
+
+
+{{#each products.payload}}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{this.title}}</h5>
+            <p class="card-text">{{this.description}}</p>
+            <p class="card-text price">{{this.price}}</p>
+            <p class="card-text code">{{this.code}}</p>
+            <p class="card-text stock">{{this.stock}}</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+    </div>
+{{/each}}
+<div class="pageNumbers">
+    {{#if products.prevPage}}
+        <a href="/products?page={{this.products.prevPage}}">Anterior</a>
+    {{/if}}
+    {{#if products.nextPage}}
+        <a href="/products?page={{this.products.nextPage}}">Siguiente</a>
+    {{/if}}
+</div>
+

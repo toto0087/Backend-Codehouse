@@ -12,16 +12,18 @@ router.get('/', async (req, res) => {
 });
 
 
+router.get('/products', async (req, res) => {
+
+    const products = await productsManager.findAll(req.query)
+
+    res.render("products",{style:"products.css",products})
+});
+
+
 router.get('/realtimeproducts', async (req, res) => {
 
-    //const products = await productsManager.getProducts()
-
-    //socketServer.on("connection", socket => {
-    //    socket.emit("getProducts",products)
-    //})
 
     res.render("realtimeproducts",{style:"realtimeproducts.css"})
-
 });
 
 
