@@ -8,6 +8,7 @@ import FileStore from "session-file-store";
 import cookieParser from "cookie-parser";
 import MongoStore from "connect-mongo";
 import session from "express-session";
+import loginRouter from "./router/login.router.js";
 
 import express from "express";
 import { Server } from "socket.io";
@@ -17,11 +18,23 @@ import { URI } from "./db/config.js";
 const app = express();
 const port = 3000; 
 
+// Middlewares
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.static(__dirname + "/public"));
+app.use(cookieParser('123456'));
+app.use(session({ 
+   store:  MongoStore.create({mongoUrl:URI}), 
+   cookie: {maxAge: 60 * 60 * 1000 }, //1 hora
+   secret: '123456'
+  }))
+
 //routes
 app.use("/api/products",productsRouter)
 app.use("/api/carts",cartsRotuer)
-app.use('/', viewsRouter)
 app.use('/api/chat', chatRouter)
+app.use('/login', loginRouter)
+app.use('/', viewsRouter)
 
 // Inicializacion de motor de plantillas
 app.engine("handlebars", handlebars.engine());
@@ -32,13 +45,7 @@ app.set("views", __dirname + "/views");
 // Indicamos el motor de plantillas a utilizar
 app.set("view engine", "handlebars");
 
-// Middlewares
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(express.static(__dirname + "/public"));
-app.use(cookieParser('123456'));
-app.use(session({ store: MongoStore.create({mongoUrl:URI})}))
-
+  
 // Inicia el servidor en el puerto especificado
 const httpServer = app.listen(port, () => {
   console.log(`Servidor Express escuchando en el puerto ${port}`);

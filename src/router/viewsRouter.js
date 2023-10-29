@@ -2,29 +2,27 @@ import {Router} from "express"
 const router = Router();
 import { productsManager } from "../dao/db/productsManager.js";
 
-
-
 router.get('/', async (req, res) => {
-
     const products = await productsManager.getProducts()
-
     res.render("home",{style:"home.css",products})
 });
 
 
 router.get('/products', async (req, res) => {
-
     const products = await productsManager.findAll(req.query)
-
     res.render("products",{style:"products.css",products})
 });
 
 
 router.get('/realtimeproducts', async (req, res) => {
-
-
     res.render("realtimeproducts",{style:"realtimeproducts.css"})
 });
+
+
+router.get('/signup', async (req, res) => {
+    res.render("signup",{style:"signup.css"})
+});
+
 
 
 router.post('/realtimeproducts', async (req, res) => {
