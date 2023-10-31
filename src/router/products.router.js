@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
 
     try {
         let products = await productsManager.findAll(req.query);
-        res.status(200).json(products.payload); 
+        res.status(200).json(products); 
     } catch (error) {
         res.status(404).json("Prods no encontrados"); 
     }
