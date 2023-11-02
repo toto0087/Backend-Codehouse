@@ -18,6 +18,9 @@ router.get('/signup', async (req, res) => {
     res.render("signup",{style:"signup.css"})
 });
 
+router.get('/login', async (req, res) => {
+    res.render("login",{style:"login.css"})
+});
 
 
 router.post('/realtimeproducts', async (req, res) => {

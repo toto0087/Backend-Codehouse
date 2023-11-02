@@ -4,17 +4,15 @@ import viewsRouter from "./router/viewsRouter.js"
 import chatRouter from "./router/chatRouter.js"
 import __dirname from "./utils.js";
 import "./db/config.js"
-import FileStore from "session-file-store";
 import cookieParser from "cookie-parser";
 import MongoStore from "connect-mongo";
 import session from "express-session";
-import loginRouter from "./router/login.router.js";
-
 import express from "express";
 import { Server } from "socket.io";
 import handlebars from "express-handlebars";
 import { productsManager } from "./dao/db/productsManager.js";
 import { URI } from "./db/config.js";
+import usersRouter from "./router/user.router.js";
 const app = express();
 const port = 3000; 
 
@@ -33,7 +31,7 @@ app.use(session({
 app.use("/api/products",productsRouter)
 app.use("/api/carts",cartsRotuer)
 app.use('/api/chat', chatRouter)
-app.use('/login', loginRouter)
+app.use('/api/users', usersRouter)
 app.use('/', viewsRouter)
 
 // Inicializacion de motor de plantillas
