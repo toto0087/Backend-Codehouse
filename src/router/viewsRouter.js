@@ -1,15 +1,16 @@
 import {Router} from "express"
 const router = Router();
 import { productsManager } from "../dao/db/productsManager.js";
+import checkSession from "../middleware/checksession.js";
 
 
-router.get('/products', async (req, res) => {
+router.get('/products',checkSession, async (req, res) => {
     const products = await productsManager.findAll(req.query)
     res.render("products",{style:"products.css",products})
 });
 
 
-router.get('/realtimeproducts', async (req, res) => {
+router.get('/realtimeproducts',checkSession, async (req, res) => {
     res.render("realtimeproducts",{style:"realtimeproducts.css"})
 });
 
@@ -23,7 +24,7 @@ router.get('/login', async (req, res) => {
 });
 
 
-router.post('/realtimeproducts', async (req, res) => {
+router.post('/realtimeproducts',checkSession, async (req, res) => {
     const {title,price,thumbnail,stock,code,description} = req.body
     if(!title || !price || !thumbnail || !stock || !code || !description) 
     return res.status(400).json({error:"Faltan datos"})
@@ -36,14 +37,14 @@ router.post('/realtimeproducts', async (req, res) => {
 })
 
 
-router.get('/realtimeproducts/:id', async (req, res) => {
+router.get('/realtimeproducts/:id',checkSession, async (req, res) => {
     const {id} = req.params
     const product = await productsManager.findById(id)
     if(!product) return res.status(404).json({error:"Producto no encontrado"})
     res.status(200).json({message:"product found" , product})
 })
 
-router.put('/realtimeproducts/:id', async (req, res) => {
+router.put('/realtimeproducts/:id',checkSession, async (req, res) => {
     const {id} = req.params
     const product = await productsManager.findById(id)
     if(!product) return res.status(404).json({error:"Producto no encontrado"})
@@ -51,7 +52,7 @@ router.put('/realtimeproducts/:id', async (req, res) => {
     res.status(200).json({message:"product updated" , product:updatedProduct})
 })
 
-router.delete('/realtimeproducts/:id', async (req, res) => {
+router.delete('/realtimeproducts/:id',checkSession, async (req, res) => {
     const {id} = req.params
     const product = await productsManager.findById(id)
     if(!product) return res.status(404).json({error:"Producto no encontrado"})

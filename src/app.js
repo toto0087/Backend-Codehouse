@@ -13,6 +13,7 @@ import handlebars from "express-handlebars";
 import { productsManager } from "./dao/db/productsManager.js";
 import { URI } from "./db/config.js";
 import usersRouter from "./router/user.router.js";
+import checkSession from "./middleware/checksession.js";
 const app = express();
 const port = 3000; 
 
@@ -28,9 +29,9 @@ app.use(session({
   }))
 
 //routes
-app.use("/api/products",productsRouter)
-app.use("/api/carts",cartsRotuer)
-app.use('/api/chat', chatRouter)
+app.use("/api/products",checkSession,productsRouter)
+app.use("/api/carts",checkSession,cartsRotuer)
+app.use('/api/chat',checkSession,chatRouter)
 app.use('/api/users', usersRouter)
 app.use('/', viewsRouter)
 
