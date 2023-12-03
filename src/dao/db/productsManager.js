@@ -11,10 +11,10 @@ class ProductManager extends BaseManager{
             limit,
             page,
             sort,
-            stock,
+            stock,     
         } = params;
 
-        const query = stock ? {stock: {$gt: stock}} : null;
+        const query = stock ? {stock: {$gt: stock}} : null; // stock mayor a 0
 
         const options = {
             limit: limit ? limit : 1, // resultados por pagina
@@ -22,12 +22,9 @@ class ProductManager extends BaseManager{
             sort: (sort === 'asc' || sort === 'desc') ? {price: sort == 'asc' ? 1 : -1 }: null,
         }
 
-        console.log(options);
         try {            
             // Verificamos si existe query y options
-            const result = await this.model.paginate( query ? query : {} , options ? options : {});
-
-            console.log(result);
+            const result = await this.model.paginate( query ? query : {} , options ? options : {}); 
 
             const info = {
                 status: 'success',
@@ -53,7 +50,6 @@ class ProductManager extends BaseManager{
             };
         }
     }
-
 }
 
 export const productsManager = new ProductManager();

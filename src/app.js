@@ -8,12 +8,15 @@ import cookieParser from "cookie-parser";
 import MongoStore from "connect-mongo";
 import session from "express-session";
 import express from "express";
-import { Server } from "socket.io";
 import handlebars from "express-handlebars";
-import { productsManager } from "./dao/db/productsManager.js";
 import { URI } from "./db/config.js";
 import usersRouter from "./router/user.router.js";
 import checkSession from "./middleware/checksession.js";
+import passport from "passport";
+import './passport.js'
+import Websocket from "./config/socketserver.js";
+
+
 const app = express();
 const port = 3000; 
 
@@ -28,11 +31,16 @@ app.use(session({
    secret: '123456'
   }))
 
+// Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 //routes
+app.use('/api/users', usersRouter)
 app.use("/api/products",checkSession,productsRouter)
 app.use("/api/carts",checkSession,cartsRotuer)
-app.use('/api/chat',checkSession,chatRouter)
-app.use('/api/users', usersRouter)
+app.use('/chat',checkSession,chatRouter)
 app.use('/', viewsRouter)
 
 // Inicializacion de motor de plantillas
@@ -50,31 +58,8 @@ const httpServer = app.listen(port, () => {
   console.log(`Servidor Express escuchando en el puerto ${port}`);
 });
 
+
 // Websocket
-export const socketServer = new Server(httpServer);
+export const socketServer = Websocket(httpServer);
 
 
-const messages = []
-
-
-socketServer.on("connection",(socket)=>{
-  console.log(`cliente conectado ${socket.id}`);
-
-  socket.on("newUser", (user) => {
-    socket.broadcast.emit("NewUserBroadcast", user);
-  });
-
-  socket.on("message", info => {
-    messages.push(info)
-    socketServer.emit("chat",messages)
-    
-  });
-
-  socket.on("createProduct", async (prod) => {
-    const newProduct = await productsManager.create(prod);
-    socket.emit('productCreated', newProduct);
-  });
-
-
-  socket.on("disconnect", ()=> console.log(`Se desconecto el cliente ${socket.id}`))
-})

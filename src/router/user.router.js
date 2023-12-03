@@ -1,59 +1,58 @@
 import {Router} from "express"
-import { userManager } from "../dao/db/userManager.js";
-import { compareData } from "../utils.js";
-import { hashData } from "../utils.js";
-import { cartsManager } from "../dao/db/cartsManager.js";
+import passport from "passport";
 
 const router = Router();
 
+/////////////////////////// LO HACE PASSPORT YA ///////////////////////////
 
-router.post('/signup', async (req, res) => {
-    try {
-        const { first_name, last_name, email, password, birth_date } = req.body;
-
-
-        // Birth date validation
-        const birthDate = new Date(birth_date);
-        const today = new Date();
-        let age = today.getFullYear() - birthDate.getFullYear();
-        const month = today.getMonth() - birthDate.getMonth();
-        if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
-            age--;
-        }
-        if (age < 18) return res.status(400).json({ error: "Debe ser mayor de 18 años para registrarse" });
-        if (age > 99) return res.status(400).json({ error: "La fecha de nacimiento es inválida" });
-
-        // Email validation
-        const userExist = await userManager.findByEmail(email);
-        if (userExist) return res.status(400).json({ error: "El email ya existe" });
-
-        // Password validation
-        if (password.length < 8) return res.status(400).json({ error: "La contraseña debe tener al menos 8 caracteres" });
-
-        // Encriptamos la contraseña
-        const hashedPassword = await hashData(password); 
+// router.post('/signup', async (req, res) => {
+//     try {
+//         const { first_name, last_name, email, password, birth_date } = req.body;
 
 
-        const cart = await cartsManager.create();
+//         // Birth date validation
+//         const birthDate = new Date(birth_date);
+//         const today = new Date();
+//         let age = today.getFullYear() - birthDate.getFullYear();
+//         const month = today.getMonth() - birthDate.getMonth();
+//         if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+//             age--;
+//         }
+//         if (age < 18) return res.status(400).json({ error: "Debe ser mayor de 18 años para registrarse" });
+//         if (age > 99) return res.status(400).json({ error: "La fecha de nacimiento es inválida" });
 
-        const user = {
-            first_name,
-            last_name,
-            email,
-            cart: cart._id,
-            birth_date,
-            password: hashedPassword
-        }
+//         // Email validation
+//         const userExist = await userManager.findByEmail(email);
+//         if (userExist) return res.status(400).json({ error: "El email ya existe" });
 
-        const newUser = await userManager.create(user)
+//         // Password validation
+//         if (password.length < 8) return res.status(400).json({ error: "La contraseña debe tener al menos 8 caracteres" });
+
+//         // Encriptamos la contraseña
+//         const hashedPassword = await hashData(password); 
+
+
+//         const cart = await cartsManager.create();
+
+//         const user = {
+//             first_name,
+//             last_name,
+//             email,
+//             cart: cart._id,
+//             birth_date,
+//             password: hashedPassword
+//         }
+
+//         const newUser = await userManager.create(user)
         
-        return res.redirect('/login')
-    } catch (error) {
-        return res.status(400).json({error: error.message});
-    }
-});
+//         return res.redirect('/login')
+//     } catch (error) {
+//         return res.status(400).json({error: error.message});
+//     }
+// });
 
 
+/*
 router.post('/login', async (req, res) => { 
     const {email,password} = req.body;
     try {
@@ -61,8 +60,6 @@ router.post('/login', async (req, res) => {
 
             const userDatabase = await userManager.findByEmail(email);
             if (!userDatabase) return res.status(404).json({ error: "Usuario no encontrado" })
-            console.log(userDatabase);
-            console.log(password);
             const passwordMatch = await compareData(password, userDatabase.password);
             if (!passwordMatch) return res.status(400).json({ error: "El email o la contraseña son incorrectos" });
 
@@ -89,5 +86,42 @@ router.post('/login', async (req, res) => {
     }
 
 });
+*/
+
+/////////////////////////// PASSPORT ///////////////////////////
+
+
+router.post('/login',
+ passport.authenticate('login', { 
+    successRedirect: '/products', 
+    failureRedirect: '/login' }))
+
+router.post('/signup', 
+passport.authenticate('signup', { 
+    successRedirect: '/products', 
+    failureRedirect: '/signup' }))
+
+router.get('/logout',() => destroySession);
+const destroySession = async (req, res) => {
+    try {
+        req.session.destroy(()=> {
+            res.redirect('/login')
+        });
+    } catch (error) {
+        return res.status(400).json({ error: error });
+    }
+}
+
+router.get('/auth/github',
+  passport.authenticate('github', {
+     scope: [ 'user:email' ] 
+    }));
+
+router.get('/github', 
+  passport.authenticate('github', {
+     failureRedirect: '/login' , 
+     successRedirect: '/products'
+    }));
+
 
 export default router;

@@ -1,8 +1,8 @@
 import  { Schema, model } from "mongoose";
-
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 const cartsSchema = new Schema({ 
-    produts: [{
+    products: [{
         id: {
             type: Schema.Types.ObjectId,
             ref: 'Products',
@@ -15,9 +15,13 @@ const cartsSchema = new Schema({
     }],
 });
 
-cartsSchema.pre(['find','findOne','findById','findOneAndUpdate'], function(next) {
-    this.populate('products.id');
-    next();
+cartsSchema.pre(['find', 'findOne', 'findOneAndUpdate', 'findById'], function () {
+    this.populate('products');
 });
+
+
+// Middleware para paginación
+cartsSchema.plugin(mongoosePaginate)
+
 
 export const cartsModel = model('Carts', cartsSchema);

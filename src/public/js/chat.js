@@ -38,7 +38,7 @@ socketClient.on("NewUserBroadcast", (user) => {
 form.onsubmit = (e) => {
     e.preventDefault();
     const infoMessage = {
-        name: user,
+        user: user,
         message: inputMessage.value,
     }
     socketClient.emit("message", infoMessage);
