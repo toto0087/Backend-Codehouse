@@ -127,7 +127,7 @@ passport.use('github',new GithubStrategy({
 
 // GOOGLE
 
-passport.use('google',new GoogleStrategy({
+passport.use('google', new GoogleStrategy({
     clientID: '1034671111148-18q35h4mq5h9mvihls3dur35bcp2ract.apps.googleusercontent.com',
     clientSecret: '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',
     callbackURL: "http://localhost:3000/api/sessions/google"
@@ -137,30 +137,50 @@ passport.use('google',new GoogleStrategy({
     try {
         const userExist = await userManager.findByEmail(profile._json.email);
 
-        if(userExist){
-            if (userExist.from_google) {
+        console.log(userExist);
+
+        if (userExist) {
+            try {
+                console.log('User exists:', userExist);
+                if (!userExist.from_google) {
+                    console.log('Updating user from_google to true');
+                    // Actualizar el usuario existente
+                    userExist.from_google = true;
+                    await userExist.save();
+                    console.log('User updated:', userExist);
+                }
+                console.log("entro aca");
                 return done(null, userExist);
-            } else {
-                return done(null, false);
+            } catch (error) {
+                console.error('Error updating user:', error);
+                return done(error);
+            }
+        } else {
+            console.log("perfil 2", profile);
+            try {
+                const newCart = await cartsManager.create();
+
+                const cartObjectId = newCart._id;
+
+                const user = {
+                    first_name: profile._json.name,
+                    last_name: '',
+                    email: profile._json.email,
+                    password: profile._json.node_id,
+                    cart: cartObjectId,
+                    from_google: true,
+                }
+
+                const newUser = await userManager.create(user);
+                console.log("User created:", newUser);
+                return done(null, newUser);
+            } catch (error) {
+                console.error('Error creating user:', error);
+                return done(error);
             }
         }
-
-        const newCart = await cartsManager.create();
-
-        const cartObjectId = newCart._id;
-
-        const user = {
-            first_name: profile._json.name,
-            last_name: '',
-            email: profile._json.email,
-            password: profile._json.node_id,
-            cart: cartObjectId,
-            from_google: true,
-        }
-        
-        const newUser = await userManager.create(user);  
-        return done(null, newUser);
     } catch (error) {
+        console.error('Error en la estrategia de Google:', error);
         return done(error);
     }
   }
