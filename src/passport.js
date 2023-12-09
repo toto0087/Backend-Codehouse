@@ -5,6 +5,7 @@ import { hashData } from "./utils.js";
 import { compareData } from "./utils.js";
 import { cartsManager } from "./dao/db/cartsManager.js";
 import {Strategy as GithubStrategy} from "passport-github2";
+import {Strategy as GoogleStrategy} from "passport-google-oauth20";
 
 
 // LOCAL
@@ -87,7 +88,7 @@ async (email,password,done) => {
 passport.use('github',new GithubStrategy({
     clientID: 'Iv1.475526a610ca29d2',
     clientSecret: '484e7ec8546c17dd41a9b8b9e5d5dc6369d598b5',
-    callbackURL: "http://localhost:3000/api/users/github"
+    callbackURL: "http://localhost:3000/api/sessions/github"
   },
   async (accessToken, refreshToken, profile, done) => {
     console.log(profile);
@@ -113,6 +114,48 @@ passport.use('github',new GithubStrategy({
             password: profile._json.node_id,
             cart: cartObjectId,
             from_github: true,
+        }
+        
+        const newUser = await userManager.create(user);  
+        return done(null, newUser);
+    } catch (error) {
+        return done(error);
+    }
+  }
+));
+
+
+// GOOGLE
+
+passport.use('google',new GoogleStrategy({
+    clientID: '1034671111148-18q35h4mq5h9mvihls3dur35bcp2ract.apps.googleusercontent.com',
+    clientSecret: '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',
+    callbackURL: "http://localhost:3000/api/sessions/google"
+  },
+  async (accessToken, refreshToken, profile, done) => {
+    console.log(profile);
+    try {
+        const userExist = await userManager.findByEmail(profile._json.email);
+
+        if(userExist){
+            if (userExist.from_google) {
+                return done(null, userExist);
+            } else {
+                return done(null, false);
+            }
+        }
+
+        const newCart = await cartsManager.create();
+
+        const cartObjectId = newCart._id;
+
+        const user = {
+            first_name: profile._json.name,
+            last_name: '',
+            email: profile._json.email,
+            password: profile._json.node_id,
+            cart: cartObjectId,
+            from_google: true,
         }
         
         const newUser = await userManager.create(user);  

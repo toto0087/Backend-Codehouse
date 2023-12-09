@@ -15,7 +15,7 @@ import checkSession from "./middleware/checksession.js";
 import passport from "passport";
 import './passport.js'
 import Websocket from "./config/socketserver.js";
-
+import sessionsRouter from "./router/sessions.router.js";
 
 const app = express();
 const port = 3000; 
@@ -40,6 +40,7 @@ app.use(passport.session());
 app.use('/api/users', usersRouter)
 app.use("/api/products",checkSession,productsRouter)
 app.use("/api/carts",checkSession,cartsRotuer)
+app.use('/api/sessions', sessionsRouter)
 app.use('/chat',checkSession,chatRouter)
 app.use('/', viewsRouter)
 
