@@ -1,30 +1,33 @@
 import {Router} from "express"
-const router = Router();
-import { productsManager } from "../dao/db/productsManager.js";
 import checkSession from "../middleware/checksession.js";
+import {
+    renderProducts,
+    renderRealtimeProducts,
+    renderRealtimeProduct,
+    createRealtimeProduct,
+    updateRealtimeProduct,
+    deleteRealtimeProduct,
+    renderSignup,
+    renderLogin
+}
+from "../controllers/views.controller.js";
 
+const router = Router();
 
-router.get('/products',checkSession, async (req, res) => {
-    const products = await productsManager.findAll(req.query)
-    res.render("products",{style:"products.css",products})
-});
+//PRODUCTS
+router.get('/products',checkSession, renderProducts);
 
+//REALTIME PRODUCTS
+router.get('/realtimeproducts',checkSession, renderRealtimeProducts);
+router.post('/realtimeproducts',checkSession, createRealtimeProduct);
+router.get('/realtimeproducts/:id',checkSession, renderRealtimeProduct);
+router.put('/realtimeproducts/:id',checkSession, updateRealtimeProduct);
+router.delete('/realtimeproducts/:id',checkSession, deleteRealtimeProduct);
 
-router.get('/realtimeproducts',checkSession, async (req, res) => {
-    res.render("realtimeproducts",{style:"realtimeproducts.css"})
-});
+//SIGNUP
+router.get('/signup', renderSignup);
 
-
-router.get('/signup', async (req, res) => {
-    res.render("signup",{style:"signup.css"})
-});
-
-router.get('/login', async (req, res) => {
-    res.render("login",{style:"login.css"})
-});
-
-
-
-
+//LOGIN
+router.get('/login', renderLogin);
 
 export default router;
