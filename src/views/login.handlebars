@@ -9,8 +9,11 @@
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required>
         <button type="submit">Login</button>
-        <button onclick="location.href='/api/sessions/auth/github'" type="submit">Github Login</button>
-        <button onclick="location.href='/api/sessions/auth/google'" type="submit">Google Login</button>
-        <p>Don't have an account? <a href="/signup">Sign up</a></p>
     </form>
+
+    <!-- Corregir los botones para que no envíen el formulario -->
+    <button onclick="location.href='/api/sessions/auth/github'" type="button">Github Login</button>
+    <button onclick="location.href='/api/sessions/auth/google'" type="button">Google Login</button>
+
+    <p>Don't have an account? <a href="/signup">Sign up</a></p>
 </div>
