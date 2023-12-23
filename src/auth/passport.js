@@ -10,13 +10,7 @@ import dotenv from 'dotenv';
 dotenv.config({ path: `.env`, override: true });
 dotenv.config();
 
-const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_CALLBACK_URL } = process.env;
-
 // LOCAL
-
-console.log('GITHUB_CLIENT_ID:', GITHUB_CLIENT_ID)
-console.log('GITHUB_CLIENT_SECRET:', GITHUB_CLIENT_SECRET)
-console.log('GITHUB_CALLBACK_URL:', GITHUB_CALLBACK_URL)
 
 passport.use('signup' , new LocalStrategy({
     usernameField: 'email',
