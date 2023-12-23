@@ -1,4 +1,4 @@
-import { productsManager } from "../dao/db/productsManager";
+import { productsManager } from "../dao/db/productsManager.js";
 
 async function renderProducts(req, res) {
     const products = await productsManager.findAll(req.query)

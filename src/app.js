@@ -1,5 +1,5 @@
-import productsRouter from "./router/products.router.js" 
-import cartsRotuer from "./router/carts.router.js"
+import productsRouter from "./router/productsRouter.js" 
+import cartsRotuer from "./router/cartsRouter.js"
 import viewsRouter from "./router/viewsRouter.js"
 import chatRouter from "./router/chatRouter.js"
 import __dirname from "./utils.js";
@@ -13,7 +13,7 @@ import { URI } from "./db/config.js";
 import usersRouter from "./router/user.router.js";
 import checkSession from "./middleware/checksession.js";
 import passport from "passport";
-import './passport.js'
+import './auth/passport.js'
 import Websocket from "./config/socketserver.js";
 import sessionsRouter from "./router/sessions.router.js";
 

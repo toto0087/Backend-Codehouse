@@ -1,14 +1,22 @@
 import passport from "passport";
-import { userManager } from "./dao/db/userManager.js";
+import { userManager } from "../dao/db/userManager.js";
 import {Strategy as LocalStrategy} from "passport-local";
-import { hashData } from "./utils.js";
-import { compareData } from "./utils.js";
-import { cartsManager } from "./dao/db/cartsManager.js";
+import { hashData } from "../utils.js";
+import { compareData } from "../utils.js";
+import { cartsManager } from "../dao/db/cartsManager.js";
 import {Strategy as GithubStrategy} from "passport-github2";
 import {Strategy as GoogleStrategy} from "passport-google-oauth20";
+import dotenv from 'dotenv';
+dotenv.config({ path: `.env`, override: true });
+dotenv.config();
 
+const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_CALLBACK_URL } = process.env;
 
 // LOCAL
+
+console.log('GITHUB_CLIENT_ID:', GITHUB_CLIENT_ID)
+console.log('GITHUB_CLIENT_SECRET:', GITHUB_CLIENT_SECRET)
+console.log('GITHUB_CALLBACK_URL:', GITHUB_CALLBACK_URL)
 
 passport.use('signup' , new LocalStrategy({
     usernameField: 'email',
@@ -51,14 +59,14 @@ passport.use('login' , new LocalStrategy({
 async (email,password,done) => {
     try {
 
-        if (email == "adminCoder@coder.com") {
+        if (email == process.env.ADMIN_EMAIL ) {
 
-            if (password == "adminCod3r123") {
+            if (password == process.env.ADMIN_PASSWORD) {
                 const userAdm = {
-                    email: "adminCoder@coder.com" , 
-                    first_name: "Administrador coder", 
+                    email: process.env.ADMIN_EMAIL , 
+                    first_name: process.env.ADMIN_FIRST_NAME , 
                     role: "admin",
-                    cart: "653bb65e8619f8ed2c4864aa"
+                    cart: process.env.ADMIN_CART
                 }
                 return done(null, userAdm)
             }
@@ -86,9 +94,9 @@ async (email,password,done) => {
 // GITHUB
 
 passport.use('github',new GithubStrategy({
-    clientID: 'Iv1.475526a610ca29d2',
-    clientSecret: '484e7ec8546c17dd41a9b8b9e5d5dc6369d598b5',
-    callbackURL: "http://localhost:3000/api/sessions/github"
+    clientID: process.env.GITHUB_CLIENT_ID ,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    callbackURL: process.env.GITHUB_CALLBACK_URL
   },
   async (accessToken, refreshToken, profile, done) => {
     console.log(profile);
@@ -128,9 +136,9 @@ passport.use('github',new GithubStrategy({
 // GOOGLE
 
 passport.use('google', new GoogleStrategy({
-    clientID: '1034671111148-18q35h4mq5h9mvihls3dur35bcp2ract.apps.googleusercontent.com',
-    clientSecret: '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',
-    callbackURL: "http://localhost:3000/api/sessions/google"
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: process.env.GOOGLE_CALLBACK_URL
   },
   async (accessToken, refreshToken, profile, done) => {
     console.log(profile);

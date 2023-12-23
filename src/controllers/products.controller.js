@@ -1,4 +1,4 @@
-import { productsManager } from "../dao/db/productsManager";
+import { productsManager } from "../dao/db/productsManager.js";
 
 async function getProducts(req, res) {
     try {
