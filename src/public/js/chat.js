@@ -41,11 +41,12 @@ form.onsubmit = (e) => {
         user: user,
         message: inputMessage.value,
     }
+
     socketClient.emit("message", infoMessage);
 }
 
 socketClient.on("chat", (messages) => {
-    const chat = messages.map((objMessage) => `<p> ${objMessage.name}: ${objMessage.message} </p>`)
+    const chat = messages.map((objMessage) => `<p> ${objMessage.user}: ${objMessage.message} </p>`)
     .join(" ");
     chatDiv.innerHTML = chat;
 });
