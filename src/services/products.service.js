@@ -1,4 +1,4 @@
-import { productsManager } from "../dao/db/productsManager";
+import { productsManager } from "../dao/db/productsManager.js";
 
 export const findAll = (params) => {
     return productsManager.findAll(params);

@@ -1,4 +1,4 @@
-import { cartsManager } from "../dao/db/cartsManager";
+import { cartsManager } from "../dao/db/cartsManager.js";
 
 export const findAll = () => {
     return cartsManager.findAll();

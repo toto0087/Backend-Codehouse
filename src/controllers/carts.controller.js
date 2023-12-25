@@ -1,50 +1,50 @@
-import { cartsManager } from "../dao/db/cartsManager.js";
+import { findById ,create, update, deleteById, addProdCart } from "../services/carts.service.js";
 
-async function createCart(req, res) {
+function createCart(req, res) {
     try { 
-        const cart = await cartsManager.create(req.body);
+        const cart = create(req.body);
         res.status(200).json(cart); 
     } catch (error) {
         res.status(400).json("Carrito no agregado"); 
     }
 }
 
-async function getCartById(req, res) {
+function getCartById(req, res) {
     const {id} = req.params
     try {
-        const cart = await cartsManager.findById(id);
+        const cart = findById(id);
         res.status(200).json(cart); 
     } catch (error) {
         res.status(404).json("Carrito no encontrado"); 
     }
 }
 
-async function addProdCart(req, res) {
+function addProductCart(req, res) {
     const carritoId = parseInt(req.params.cid);
     const productoId = parseInt(req.params.pid);
     try {
-        const cart = await cartsManager.addProdCart(carritoId,productoId);
+        const cart = addProdCart(carritoId,productoId);
         res.status(200).json(cart); 
     } catch (error) {
         res.status(404).json("Producto no agregado en carrito"); 
     }
 }
 
-async function updateCart(req, res) {
+function updateCart(req, res) {
     const carritoId = parseInt(req.params.cid);
     try {
-        const cart = await cartsManager.update(carritoId,req.body);
+        const cart = update(carritoId,req.body);
         res.status(200).json(cart); 
     } catch (error) {
         res.status(404).json("Carrito no actualizado"); 
     }
 }
 
-async function updateProdCart(req, res) {
+function updateProdCart(req, res) {
     const carritoId = parseInt(req.params.cid);
     const productoId = parseInt(req.params.pid);
     try {
-        const cart = await cartsManager.updateProdCart(carritoId,productoId,req.body);
+        const cart = updateProdCart(carritoId,productoId,req.body);
         res.status(200).json(cart); 
     } catch (error) {
         res.status(404).json("Producto no actualizado en carrito"); 
@@ -52,20 +52,21 @@ async function updateProdCart(req, res) {
 }
 
 
-async function deleteCart(req, res) {
+function deleteCart(req, res) {
     const carritoId = parseInt(req.params.cid);
     try {
-        const cart = await cartsManager.delete(carritoId);
+        const cart = deleteById(carritoId);
         res.status(200).json(cart); 
     } catch (error) {
         res.status(404).json("Carrito no eliminado"); 
     }
 }
 
-export {createCart,
-        getCartById,
-        addProdCart,
-        updateCart,
-        updateProdCart,
-        deleteCart
+export {
+    createCart,
+    getCartById,
+    addProductCart,
+    updateCart,
+    updateProdCart,
+    deleteCart
 }

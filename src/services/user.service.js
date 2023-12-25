@@ -23,3 +23,4 @@ export const update = (id, user) => {
 export const deleteById = (id) => {
     return userManager.deleteById(id);
 }
+

@@ -1,7 +1,7 @@
 import {Router} from "express"
 import {createCart,
         getCartById,
-        addProdCart,
+        addProductCart,
         updateCart,
         updateProdCart,
         deleteCart
@@ -16,7 +16,7 @@ router.post('/', createCart);
 router.get('/:id', getCartById);
 
 //Agregamos un producto al carrito
-router.post('/:cid/product/:pid', addProdCart);
+router.post('/:cid/product/:pid', addProductCart);
 
 //Actualizamos el carrito
 router.put('/:cid', updateCart);
