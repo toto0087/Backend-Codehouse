@@ -19,3 +19,4 @@ export const update = (id, prod) => {
 export const deleteById = (id) => {
     return productsManager.deleteById(id);
 }
+

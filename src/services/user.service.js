@@ -1,4 +1,6 @@
-import { userManager } from "../dao/db/userManager";
+import { userManager } from "../dao/db/userManager.js";
+import UserDTO from "../dao/DTOs/user.dto.js"
+
 
 export const findAll = () => {
     return userManager.findAll();
@@ -13,7 +15,8 @@ export const findByEmail = (email) => {
 }
 
 export const create = (user) => {
-    return userManager.create(user);
+    const userDTO = new UserDTO(user);
+    return userManager.create(userDTO);
 }
 
 export const update = (id, user) => {

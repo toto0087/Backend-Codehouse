@@ -1,9 +1,9 @@
 import passport from "passport";
-import { userManager } from "../dao/db/userManager.js";
+import {findByEmail,findById,create as createUser} from "../services/user.service.js";
+import {create as createCart} from "../services/carts.service.js";
 import {Strategy as LocalStrategy} from "passport-local";
 import { hashData } from "../utils.js";
 import { compareData } from "../utils.js";
-import { cartsManager } from "../dao/db/cartsManager.js";
 import {Strategy as GithubStrategy} from "passport-github2";
 import {Strategy as GoogleStrategy} from "passport-google-oauth20";
 import dotenv from 'dotenv';
@@ -20,12 +20,12 @@ async (req,email,password,done) => {
     try {
         const { first_name, last_name, birth_date} = req.body;
         
-        const userExist = await userManager.findByEmail(email);
+        const userExist = await findByEmail(email);
         if (userExist) return done(null, false, { message: "El email ya existe" });
 
         const encriptedPass = await hashData(password);
 
-        const newCart = await cartsManager.create();
+        const newCart = await createCart();
 
         const cartObjectId = newCart._id;
 
@@ -38,7 +38,7 @@ async (req,email,password,done) => {
             cart: cartObjectId 
         }
         
-        const newUser = await userManager.create(user);  
+        const newUser = await createUser(user);  
         return done(null, newUser);
     } catch (error) {
         return done(error);
@@ -69,7 +69,7 @@ async (email,password,done) => {
 
         } else {
             
-            const user = await userManager.findByEmail(email);
+            const user = await findByEmail(email);
 
             if (!user) return done(null, false, { message: "El email no existe" });
 
@@ -95,7 +95,7 @@ passport.use('github',new GithubStrategy({
   async (accessToken, refreshToken, profile, done) => {
     console.log(profile);
     try {
-        const userExist = await userManager.findByEmail(profile._json.email);
+        const userExist = await findByEmail(profile._json.email);
 
         if(userExist){
             if (userExist.from_github) {
@@ -105,7 +105,7 @@ passport.use('github',new GithubStrategy({
             }
         }
 
-        const newCart = await cartsManager.create();
+        const newCart = await createCart();
 
         const cartObjectId = newCart._id;
 
@@ -118,7 +118,7 @@ passport.use('github',new GithubStrategy({
             from_github: true,
         }
         
-        const newUser = await userManager.create(user);  
+        const newUser = await createUser(user);  
         return done(null, newUser);
     } catch (error) {
         return done(error);
@@ -137,7 +137,7 @@ passport.use('google', new GoogleStrategy({
   async (accessToken, refreshToken, profile, done) => {
     console.log(profile);
     try {
-        const userExist = await userManager.findByEmail(profile._json.email);
+        const userExist = await findByEmail(profile._json.email);
 
         console.log(userExist);
 
@@ -160,7 +160,7 @@ passport.use('google', new GoogleStrategy({
         } else {
             console.log("perfil 2", profile);
             try {
-                const newCart = await cartsManager.create();
+                const newCart = await createUser();
 
                 const cartObjectId = newCart._id;
 
@@ -173,7 +173,7 @@ passport.use('google', new GoogleStrategy({
                     from_google: true,
                 }
 
-                const newUser = await userManager.create(user);
+                const newUser = await createUser(user);
                 console.log("User created:", newUser);
                 return done(null, newUser);
             } catch (error) {
@@ -196,7 +196,7 @@ passport.serializeUser(function(user, done) {
   passport.deserializeUser(async (info, done) => {
     try {
       if (info && info._id) {
-        const user = await userManager.findById(info._id);
+        const user = await findById(info._id);
         if (user) {
           done(null, user);
         } else {
