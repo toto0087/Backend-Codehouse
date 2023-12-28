@@ -22,10 +22,11 @@ const Websocket = (httpserver) => {
         
       });
     
-      socket.on("createProduct", async (prod) => {
-        const newProduct = await productsManager.create(prod);
-        socket.emit('productCreated', newProduct);
-      });
+      // socket.on("createProduct", async (prod) => {
+      //   console.log("producto creado desde el socket server");
+      //   const newProduct = await productsManager.create(prod);
+      //   socket.emit('productCreated', newProduct);
+      // });
     
     
       socket.on("disconnect", ()=> console.log(`Se desconecto el cliente ${socket.id}`))

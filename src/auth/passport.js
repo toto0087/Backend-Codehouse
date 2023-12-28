@@ -18,28 +18,55 @@ passport.use('signup' , new LocalStrategy({
 }, 
 async (req,email,password,done) => {
     try {
+
         const { first_name, last_name, birth_date} = req.body;
-        
-        const userExist = await findByEmail(email);
-        if (userExist) return done(null, false, { message: "El email ya existe" });
 
-        const encriptedPass = await hashData(password);
+        if (email == process.env.ADMIN_EMAIL ) {
 
-        const newCart = await createCart();
+            if (password == process.env.ADMIN_PASSWORD) {
+                const encriptedPass = await hashData(password);
+                const cartObjectId = process.env.ADMIN_CART;
+                const userAdm = {
+                    first_name,
+                    last_name,
+                    birth_date,
+                    email,
+                    role: "admin",
+                    password: encriptedPass,
+                    cart: cartObjectId 
+                }
+                const userAdmin = await createUser(userAdm);  
+                return done(null, userAdmin)
+            }
+            
+            return done(null, false, { message: "Contraseña incorrecta" });
 
-        const cartObjectId = newCart._id;
+        } else {
 
-        const user = {
-            first_name,
-            last_name,
-            birth_date,
-            email,
-            password: encriptedPass,
-            cart: cartObjectId 
+            const { first_name, last_name, birth_date} = req.body;
+            
+            const userExist = await findByEmail(email);
+            if (userExist) return done(null, false, { message: "El email ya existe" });
+    
+            const encriptedPass = await hashData(password);
+    
+            const newCart = await createCart();
+    
+            const cartObjectId = newCart._id;
+    
+            const user = {
+                first_name,
+                last_name,
+                birth_date,
+                email,
+                password: encriptedPass,
+                cart: cartObjectId 
+            }
+            
+            const newUser = await createUser(user);  
+            return done(null, newUser);
         }
-        
-        const newUser = await createUser(user);  
-        return done(null, newUser);
+
     } catch (error) {
         return done(error);
     }
@@ -75,7 +102,9 @@ async (email,password,done) => {
 
             const validPassword = await compareData(password, user.password);
             if (!validPassword) return done(null, false, { message: "Contraseña incorrecta" });
-    
+            
+            console.log("User logged:", user);
+            console.log("User created:", user.role);
             return done(null, user);
         }
 
@@ -174,7 +203,7 @@ passport.use('google', new GoogleStrategy({
                 }
 
                 const newUser = await createUser(user);
-                console.log("User created:", newUser);
+                console.log("User created:", req.user);
                 return done(null, newUser);
             } catch (error) {
                 console.error('Error creating user:', error);
@@ -194,16 +223,14 @@ passport.serializeUser(function(user, done) {
   });
   
   passport.deserializeUser(async (info, done) => {
+    console.log('deserializeUser info:', info);
     try {
-      if (info && info._id) {
-        const user = await findById(info._id);
-        if (user) {
-          done(null, user);
-        } else {
-          done(null, false, { message: 'Usuario no encontrado' });
-        }
+      const userId = info._id || info; // Asegurarse de obtener el _id si está en un objeto
+      const user = await findById(userId);
+      if (user) {
+        done(null, user);
       } else {
-        done(null, false, { message: 'ID de usuario no proporcionado' });
+        done(null, false, { message: 'Usuario no encontrado' });
       }
     } catch (error) {
       done(error);

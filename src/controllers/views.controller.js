@@ -11,9 +11,11 @@ function renderRealtimeProducts(req, res) {
 
 function createRealtimeProduct (req, res) {
     const {title,price,thumbnail,stock,code,description} = req.body
-    if(!title || !price || !thumbnail || !stock || !code || !description) 
+    if(!title || !price || !description || !code || !stock ) 
     return res.status(400).json({error:"Faltan datos"})
     try {
+        console.log("producto creado desde createRealtimeProduct controller");
+        console.log("User info:", req.user);
         const createdProduct = create(req.body)   
         res.status(200).json({message:"product created" , product:createdProduct})     
     } catch (error) {

@@ -11,6 +11,7 @@ import {
     renderLogin
 }
 from "../controllers/views.controller.js";
+import isAdmin from "../middleware/isAdmin.js";
 
 const router = Router();
 
@@ -19,10 +20,10 @@ router.get('/products',checkSession, renderProducts);
 
 //REALTIME PRODUCTS
 router.get('/realtimeproducts',checkSession, renderRealtimeProducts);
-router.post('/realtimeproducts',checkSession, createRealtimeProduct);
+router.post('/realtimeproducts', checkSession,isAdmin, createRealtimeProduct);
 router.get('/realtimeproducts/:id',checkSession, renderRealtimeProduct);
-router.put('/realtimeproducts/:id',checkSession, updateRealtimeProduct);
-router.delete('/realtimeproducts/:id',checkSession, deleteRealtimeProduct);
+router.put('/realtimeproducts/:id',checkSession,isAdmin, updateRealtimeProduct);
+router.delete('/realtimeproducts/:id',checkSession,isAdmin, deleteRealtimeProduct);
 
 //SIGNUP
 router.get('/signup', renderSignup);
