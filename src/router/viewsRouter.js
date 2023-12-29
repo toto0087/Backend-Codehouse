@@ -8,10 +8,12 @@ import {
     updateRealtimeProduct,
     deleteRealtimeProduct,
     renderSignup,
-    renderLogin
+    renderLogin,
+    renderChat
 }
 from "../controllers/views.controller.js";
 import isAdmin from "../middleware/isAdmin.js";
+import isUserNotAdm from "../middleware/isUserNotAdm.js";
 
 const router = Router();
 
@@ -30,5 +32,8 @@ router.get('/signup', renderSignup);
 
 //LOGIN
 router.get('/login', renderLogin);
+
+//CHAT
+router.get('/chat',checkSession, renderChat);
 
 export default router;

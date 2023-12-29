@@ -1,4 +1,4 @@
-import { messageManager } from "../dao/db/messageManager";
+import { messageManager } from "../dao/db/messageManager.js";
 
 export const findAll = () => {
     return messageManager.findAll();

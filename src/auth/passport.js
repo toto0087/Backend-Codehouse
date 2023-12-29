@@ -24,8 +24,11 @@ async (req,email,password,done) => {
         if (email == process.env.ADMIN_EMAIL ) {
 
             if (password == process.env.ADMIN_PASSWORD) {
+
                 const encriptedPass = await hashData(password);
-                const cartObjectId = process.env.ADMIN_CART;
+                const newCart = await createCart();
+                const cartObjectId = newCart._id;
+
                 const userAdm = {
                     first_name,
                     last_name,
@@ -89,7 +92,10 @@ async (email,password,done) => {
                     role: "admin",
                     cart: process.env.ADMIN_CART
                 }
-                return done(null, userAdm)
+                const user = await findByEmail(email);
+                console.log("User logged:", user);
+                console.log("User created:", user.role);
+                return done(null, user)
             }
             
             return done(null, false, { message: "Contraseña incorrecta" });
@@ -216,7 +222,6 @@ passport.use('google', new GoogleStrategy({
     }
   }
 ));
-
 
 passport.serializeUser(function(user, done) {
     done(null, user._id); // Si tenemos la info del user nos quedamos con el id

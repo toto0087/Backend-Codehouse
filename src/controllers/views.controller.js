@@ -10,12 +10,10 @@ function renderRealtimeProducts(req, res) {
 }
 
 function createRealtimeProduct (req, res) {
-    const {title,price,thumbnail,stock,code,description} = req.body
+    const {title,price,stock,code,description} = req.body
     if(!title || !price || !description || !code || !stock ) 
     return res.status(400).json({error:"Faltan datos"})
     try {
-        console.log("producto creado desde createRealtimeProduct controller");
-        console.log("User info:", req.user);
         const createdProduct = create(req.body)   
         res.status(200).json({message:"product created" , product:createdProduct})     
     } catch (error) {
@@ -54,6 +52,10 @@ function renderLogin(req, res) {
     res.render("login",{style:"login.css"})
 }
 
+function renderChat(req, res) {
+    res.render("chat",{style:"chat.css"})
+}   
+
 export {
     renderProducts,
     renderRealtimeProducts,
@@ -62,5 +64,6 @@ export {
     updateRealtimeProduct,
     deleteRealtimeProduct,
     renderSignup,
-    renderLogin
+    renderLogin,
+    renderChat
 }

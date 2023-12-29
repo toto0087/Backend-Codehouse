@@ -16,6 +16,7 @@ import passport from "passport";
 import './auth/passport.js'
 import Websocket from "./config/socketserver.js";
 import sessionsRouter from "./router/sessions.router.js";
+import passportSocketIo from 'passport.socketio';
 
 const app = express();
 const port = 3000; 
@@ -31,18 +32,33 @@ app.use(session({
    secret: '123456'
   }))
 
+  // Inicia el servidor en el puerto especificado
+  const httpServer = app.listen(port, () => {
+    console.log(`Servidor Express escuchando en el puerto ${port}`);
+  });
+
+
 // Passport
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Configurar Socket.IO para trabajar con la autenticación de Passport
+import { Server as SocketIo } from 'socket.io';
+const io = new SocketIo(httpServer);
+io.use(passportSocketIo.authorize({
+  cookieParser: cookieParser('123456'),
+  key: 'connect.sid',
+  secret: '123456',
+  store: MongoStore.create({mongoUrl: URI}),
+}));
 
 //routes
+app.use('/', viewsRouter)
 app.use('/api/users', usersRouter)
 app.use("/api/products",checkSession,productsRouter)
 app.use("/api/carts",checkSession,cartsRotuer)
 app.use('/api/sessions', sessionsRouter)
 app.use('/chat',checkSession,chatRouter)
-app.use('/', viewsRouter)
 
 // Inicializacion de motor de plantillas
 app.engine("handlebars", handlebars.engine());
@@ -54,13 +70,9 @@ app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
 
   
-// Inicia el servidor en el puerto especificado
-const httpServer = app.listen(port, () => {
-  console.log(`Servidor Express escuchando en el puerto ${port}`);
-});
 
 
 // Websocket
-export const socketServer = Websocket(httpServer);
+export const socketServer = Websocket(httpServer,io);
 
 

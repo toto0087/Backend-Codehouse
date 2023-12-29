@@ -1,3 +1,6 @@
+
+
+
 const socketClient = io();
 
 
@@ -35,13 +38,13 @@ socketClient.on("NewUserBroadcast", (user) => {
 })
 
 
-form.onsubmit = (e) => {
+form.onsubmit = async (e) => {
     e.preventDefault();
     const infoMessage = {
         user: user,
         message: inputMessage.value,
     }
-
+    
     socketClient.emit("message", infoMessage);
 }
 
