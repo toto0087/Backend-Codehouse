@@ -62,11 +62,24 @@ function deleteCart(req, res) {
     }
 }
 
+
+function addCartWithPurchase(req, res) {
+    const carritoId = parseInt(req.params.cid);
+    try {
+        const cart = addCartWithPurchase(carritoId);
+        res.status(200).json(cart); 
+    } catch (error) {
+        res.status(404).json("Compra no realizada"); 
+    }
+}
+
+
 export {
     createCart,
     getCartById,
     addProductCart,
     updateCart,
     updateProdCart,
-    deleteCart
+    deleteCart,
+    addCartWithPurchase
 }

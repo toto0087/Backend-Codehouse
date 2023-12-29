@@ -53,8 +53,11 @@ function deleteProduct(req, res) {
     }
 }
 
-export {getProducts, 
-    getProductById, 
-    createProduct, 
-    updateProduct, 
-    deleteProduct};
+export 
+    {   
+        getProducts, 
+        getProductById, 
+        createProduct, 
+        updateProduct, 
+        deleteProduct
+    };

@@ -4,7 +4,8 @@ import {createCart,
         addProductCart,
         updateCart,
         updateProdCart,
-        deleteCart
+        deleteCart,
+        addCartWithPurchase
 } from "../controllers/carts.controller.js"
 
 const router = Router();
@@ -27,6 +28,8 @@ router.put('/:cid/product/:pid', updateProdCart);
 //Eliminamos el carrito
 router.delete('/:cid', deleteCart);
 
+//Confirmamos compra de carrito
+router.post('/:cid/purchase', addCartWithPurchase);
 
 
 export default router;
