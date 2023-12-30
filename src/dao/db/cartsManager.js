@@ -3,6 +3,7 @@ import {cartsModel} from '../models/carts.model.js';
 import BaseManager from './baseManager.js';
 import { productsManager } from './productsManager.js';
 import { ticketsManager } from './ticketsManager.js';
+import {transporter} from '../../mailing/nodemailer.js'
 
 class CartsManager extends BaseManager{
     constructor() {
@@ -89,7 +90,7 @@ class CartsManager extends BaseManager{
   
       // Creamos un ticket con los datos de la compra
       const ticketData = {
-        code: generateUniqueCode, // Necesitas implementar una función para generar códigos únicos
+        code: generateUniqueCode(), 
         purchase_datetime: new Date(),
         amount: await carrito.products.reduce(async (totalPromise, product) => {
           const total = await totalPromise;
@@ -102,6 +103,17 @@ class CartsManager extends BaseManager{
   
       // Guardamos el ticket en la base de datos
       const ticket = await ticketsManager.create(ticketData);
+
+      console.log(ticket);
+
+      // Enviamos el ticket por email
+      const options =  {
+          from: "tobisape5@gmail.com",
+          to: "tobiasocchi03@hotmail.com",
+          subject: "Primer mail",
+          text: "test"
+      }
+      await transporter.sendMail(options);
   
       // Limpiar el carrito
       carrito.products = [];
