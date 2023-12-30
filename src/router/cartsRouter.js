@@ -5,7 +5,8 @@ import {createCart,
         updateCart,
         updateProdCart,
         deleteCart,
-        addCartWithPurchase
+        addCartWithPurchase,
+        getCarts
 } from "../controllers/carts.controller.js"
 
 const router = Router();
@@ -13,12 +14,15 @@ const router = Router();
 // Ruta para crear un nuevo carrito
 router.post('/', createCart);
 
+//Obtenemos todos los carritos
+router.get('/', getCarts);
+
 //Obtenemos por ID
 router.get('/:id', getCartById);
 
 //Agregamos un producto al carrito
 router.post('/:cid/product/:pid', addProductCart);
-
+        
 //Actualizamos el carrito
 router.put('/:cid', updateCart);
 

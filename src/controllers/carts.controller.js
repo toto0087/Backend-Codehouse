@@ -1,4 +1,15 @@
-import { findById ,create, update, deleteById, addProdCart } from "../services/carts.service.js";
+import { findById ,create, update, deleteById, addProdCart,addCartPurchase,findAll } from "../services/carts.service.js";
+import { findByCartId } from "../services/user.service.js";
+
+function getCarts(req, res) {
+    try {
+        const carts = findAll();
+        res.status(200).json(carts); 
+    } catch (error) {
+        res.status(404).json("Carritos no encontrados"); 
+    }
+}
+
 
 function createCart(req, res) {
     try { 
@@ -20,9 +31,11 @@ function getCartById(req, res) {
 }
 
 function addProductCart(req, res) {
-    const carritoId = parseInt(req.params.cid);
-    const productoId = parseInt(req.params.pid);
+    const carritoId = req.params.cid;
+    const productoId = req.params.pid;
+    console.log(carritoId,productoId);
     try {
+        console.log("ENTRO EN CONTROLLER");
         const cart = addProdCart(carritoId,productoId);
         res.status(200).json(cart); 
     } catch (error) {
@@ -63,10 +76,11 @@ function deleteCart(req, res) {
 }
 
 
-function addCartWithPurchase(req, res) {
-    const carritoId = parseInt(req.params.cid);
+async function addCartWithPurchase(req, res) {
+    const carritoId = req.params.cid;
+    const user = await findByCartId(carritoId);
     try {
-        const cart = addCartWithPurchase(carritoId);
+        const cart = addCartPurchase(carritoId,user);
         res.status(200).json(cart); 
     } catch (error) {
         res.status(404).json("Compra no realizada"); 
@@ -81,5 +95,6 @@ export {
     updateCart,
     updateProdCart,
     deleteCart,
-    addCartWithPurchase
+    addCartWithPurchase,
+    getCarts
 }

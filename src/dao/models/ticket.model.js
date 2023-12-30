@@ -21,4 +21,4 @@ const ticketSchema = new Schema({
       },
 } , { timestamps: true });
 
-export const messagesModel = model('Ticket', ticketSchema);
+export const ticketsModel = model('Ticket', ticketSchema);

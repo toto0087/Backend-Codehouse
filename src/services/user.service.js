@@ -14,6 +14,10 @@ export const findByEmail = (email) => {
     return userManager.findByEmail(email);
 }
 
+export const findByCartId = (cartId) => {
+    return userManager.findByCartId(cartId);
+}
+
 export const create = (user) => {
     const userDTO = new UserDTO(user);
     return userManager.create(userDTO);

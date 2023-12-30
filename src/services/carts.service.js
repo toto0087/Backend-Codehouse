@@ -21,6 +21,10 @@ export const deleteById = (id) => {
 }
 
 export const addProdCart = (carritoId,productoId) => {
+    console.log("ENTRO EN SERVICE");
     return cartsManager.addProdCart(carritoId,productoId);
 }
 
+export const addCartPurchase = (carritoId, user) => {
+    return cartsManager.addCartPurchase(carritoId, user);
+}

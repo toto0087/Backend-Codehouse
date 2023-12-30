@@ -27,6 +27,16 @@ class UserManager extends BaseManager {
         }
     }
 
+    // Busca un usuario por cartId
+    async findByCartId(cartId) {
+        try {
+            const user = await this.model.findOne({ cart: cartId });
+            return user;
+        } catch (error) {
+            return `Error al obtener el usuario por cartId: ${error}`;
+        }
+    }
+
 }
 
 export const userManager = new UserManager();

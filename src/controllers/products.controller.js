@@ -21,7 +21,6 @@ function getProductById(req, res) {
 
 function createProduct(req, res) {
     try {
-        console.log("producto creado desde el controller de products");
         const prod = req.body
         const product = create(prod);
         res.status(200).json(product); 

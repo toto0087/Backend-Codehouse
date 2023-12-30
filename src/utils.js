@@ -14,3 +14,17 @@ export const compareData = async (data, hash) => {
     return result
  };
  export default __dirname
+
+ export function generateUniqueCode() {
+   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+   const codeLength = 8;
+
+   let uniqueCode = '';
+
+   for (let i = 0; i < codeLength; i++) {
+       const randomIndex = Math.floor(Math.random() * characters.length);
+       uniqueCode += characters.charAt(randomIndex);
+   }
+
+   return uniqueCode;
+}
