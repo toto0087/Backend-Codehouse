@@ -1,11 +1,13 @@
 import { findAll,findById,create,update,deleteById } from "../services/products.service.js";
+import {errorMessages } from "../errors/error.js";
+import ErrorClass from "../errors/staticError.js";
 
 function getProducts(req, res) {
     try {
         let products = findAll(req.query);
         res.status(200).json(products); 
     } catch (error) {
-        res.status(404).json("Prods no encontrados"); 
+        ErrorClass.createError(errorMessages.PRODUCT_NOT_FOUND); 
     }
 }
 
@@ -15,7 +17,7 @@ function getProductById(req, res) {
         const product = findById(id);
         res.status(200).json(product); 
     } catch (error) {
-        res.status(404).json("Producto no encontrado"); 
+        ErrorClass.createError(errorMessages.PRODUCT_NOT_FOUND);
     }
 }
 
@@ -26,7 +28,7 @@ function createProduct(req, res) {
         res.status(200).json(product); 
 
     } catch (error) {
-        res.status(400).json("Producto no publicado"); 
+        ErrorClass.createError(errorMessages.PRODUCT_NOT_ADDED);
     }
 }
 
@@ -38,7 +40,7 @@ function updateProduct(req, res) {
         res.status(200).json(product); 
 
     } catch (error) {
-        res.status(400).json("Producto no editado"); 
+        ErrorClass.createError(errorMessages.PRODUCT_NOT_UPDATED); 
     }
 }
 
@@ -48,7 +50,7 @@ function deleteProduct(req, res) {
         const product = deleteById(id);
         res.status(200).json(product);
     } catch (error) {
-        res.status(400).json("Producto no eliminado"); 
+        ErrorClass.createError(errorMessages.PRODUCT_NOT_DELETED); 
     }
 }
 

@@ -1,12 +1,15 @@
 import { findById ,create, update, deleteById, addProdCart,addCartPurchase,findAll } from "../services/carts.service.js";
 import { findByCartId } from "../services/user.service.js";
+import {errorMessages } from "../errors/error.js";
+import ErrorClass from "../errors/staticError.js";
+
 
 function getCarts(req, res) {
     try {
         const carts = findAll();
         res.status(200).json(carts); 
     } catch (error) {
-        res.status(404).json("Carritos no encontrados"); 
+        ErrorClass.createError(errorMessages.CART_NOT_FOUND); 
     }
 }
 
@@ -16,7 +19,7 @@ function createCart(req, res) {
         const cart = create(req.body);
         res.status(200).json(cart); 
     } catch (error) {
-        res.status(400).json("Carrito no agregado"); 
+        ErrorClass.createError(errorMessages.CART_NOT_ADDED);
     }
 }
 
@@ -26,7 +29,7 @@ function getCartById(req, res) {
         const cart = findById(id);
         res.status(200).json(cart); 
     } catch (error) {
-        res.status(404).json("Carrito no encontrado"); 
+        ErrorClass.createError(errorMessages.CART_NOT_FOUND);
     }
 }
 
@@ -39,7 +42,7 @@ function addProductCart(req, res) {
         const cart = addProdCart(carritoId,productoId);
         res.status(200).json(cart); 
     } catch (error) {
-        res.status(404).json("Producto no agregado en carrito"); 
+        ErrorClass.createError(errorMessages.CART_PRODUCT_NOT_ADDED);
     }
 }
 
@@ -49,7 +52,7 @@ function updateCart(req, res) {
         const cart = update(carritoId,req.body);
         res.status(200).json(cart); 
     } catch (error) {
-        res.status(404).json("Carrito no actualizado"); 
+        ErrorClass.createError(errorMessages.CART_NOT_UPDATED);
     }
 }
 
@@ -60,7 +63,7 @@ function updateProdCart(req, res) {
         const cart = updateProdCart(carritoId,productoId,req.body);
         res.status(200).json(cart); 
     } catch (error) {
-        res.status(404).json("Producto no actualizado en carrito"); 
+        ErrorClass.createError(errorMessages.CART_PRODUCT_NOT_UPDATED);
     }
 }
 
@@ -71,7 +74,7 @@ function deleteCart(req, res) {
         const cart = deleteById(carritoId);
         res.status(200).json(cart); 
     } catch (error) {
-        res.status(404).json("Carrito no eliminado"); 
+        ErrorClass.createError(errorMessages.CART_NOT_DELETED);
     }
 }
 
@@ -83,7 +86,7 @@ async function addCartWithPurchase(req, res) {
         const cart = addCartPurchase(carritoId,user);
         res.status(200).json(cart); 
     } catch (error) {
-        res.status(404).json("Compra no realizada"); 
+        ErrorClass.createError(errorMessages.PURCHASE_INCOMPLETE);
     }
 }
 
