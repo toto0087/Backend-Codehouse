@@ -19,6 +19,7 @@ import sessionsRouter from "./router/sessions.router.js";
 import passportSocketIo from 'passport.socketio';
 import { Server as SocketIo } from 'socket.io';
 import generateMockProducts from "./mockTest/mockProducts.js";
+import {logger} from "./logs/winston.js"
 
 const app = express();
 const port = 3000; 
@@ -63,6 +64,15 @@ app.use('/chat',checkSession,chatRouter)
 app.get('/mockingproducts', (req, res) => {
   const mockProducts = generateMockProducts();
   res.json(mockProducts);
+});
+app.get('/loggertest', (req, res) => {
+  logger.fatal("fatal");
+  logger.error("error");
+  logger.warn("warn");
+  logger.info("information");
+  logger.http("http");
+  logger.debug("debug");
+  res.send("log test");
 });
 
 // Inicializacion de motor de plantillas
