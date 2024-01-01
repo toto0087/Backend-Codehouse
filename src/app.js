@@ -37,7 +37,7 @@ app.use(session({
 
   // Inicia el servidor en el puerto especificado
   const httpServer = app.listen(port, () => {
-    console.log(`Servidor Express escuchando en el puerto ${port}`);
+    logger.info(`Servidor Express escuchando en el puerto ${port}`);
   });
 
 

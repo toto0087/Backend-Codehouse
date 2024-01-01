@@ -38,7 +38,6 @@ function addProductCart(req, res) {
     const productoId = req.params.pid;
     console.log(carritoId,productoId);
     try {
-        console.log("ENTRO EN CONTROLLER");
         const cart = addProdCart(carritoId,productoId);
         res.status(200).json(cart); 
     } catch (error) {
