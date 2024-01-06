@@ -56,6 +56,10 @@ function renderChat(req, res) {
     res.render("chat",{style:"chat.css"})
 }   
 
+function renderResetPass(req, res) {
+    res.render("passreset",{style:"passreset.css"})
+}
+
 export {
     renderProducts,
     renderRealtimeProducts,
@@ -65,5 +69,6 @@ export {
     deleteRealtimeProduct,
     renderSignup,
     renderLogin,
-    renderChat
+    renderChat,
+    renderResetPass
 }

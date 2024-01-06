@@ -9,7 +9,8 @@ import {
     deleteRealtimeProduct,
     renderSignup,
     renderLogin,
-    renderChat
+    renderChat,
+    renderResetPass
 }
 from "../controllers/views.controller.js";
 import isAdmin from "../middleware/isAdmin.js";
@@ -35,5 +36,8 @@ router.get('/login', renderLogin);
 
 //CHAT
 router.get('/chat',checkSession, renderChat);
+
+//PASS RESET
+router.get('/passreset', renderResetPass);
 
 export default router;
