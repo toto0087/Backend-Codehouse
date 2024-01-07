@@ -21,6 +21,20 @@ async function handleResetPassword(req, res) {
       return res.status(400).json({ error: 'El token no es válido o ha expirado' });
     }
 
+    // Verifica si el token ha expirado
+    if (user.resetPasswordExpires < new Date()) {
+      // Redirige a la vista para generar un nuevo correo de restablecimiento
+      return res.redirect(`/reset-password/${token}`);
+    }
+
+    // Comparar la contraseña vieja con la nueva
+    const isMatch = await compareData(password, user.password);
+
+    if (isMatch) {
+      return res.status(400).json({ error: 'La contraseña no puede ser la misma que la anterior' });
+    }
+
+
     // Restablecer la contraseña y borrar el token y la fecha de expiración
     user.password = await hashData(password);
     user.resetPasswordToken = undefined;

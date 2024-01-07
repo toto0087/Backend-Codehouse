@@ -32,24 +32,4 @@ form.addEventListener('submit', async (e) => {
 
 });
 
-    // e.preventDefault();
-    // const email = form['email'].value;
-    // const password = form['password'].value;
-    // const password2 = form['password2'].value;
-    // const token = form['token'].value;
-    // const response = await fetch('/resetpass', {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify({ email, password, password2, token })
-    // });
-    // const data = await response.json();
-    // if (data.error) {
-    //     const error = document.querySelector('.error');
-    //     error.textContent = data.error;
-    //     error.style.display = 'block';
-    // }
-    // if (data.message) {
-    //     const error = document.querySelector('.error');
-    //     error.textContent = data.message;
-    //     error.style.display = 'block';
-    // }
+
