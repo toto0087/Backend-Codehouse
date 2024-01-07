@@ -32,7 +32,12 @@ const productsSchema = new Schema({
     category: {
         type: String,
         required: false
-    }
+    },
+    owner: {
+        type: String, 
+        required: false,
+        default: 'admin', 
+    },
 });
 
 productsSchema.plugin(mongoosePaginate);
