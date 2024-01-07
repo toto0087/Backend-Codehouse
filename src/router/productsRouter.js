@@ -23,7 +23,7 @@ router.post('/',isAdmin, isPremium, createProduct);
 router.put('/:id',isAdmin, updateProduct);
 
 // Ruta para eliminar un carrito
-router.delete('/:id',isAdmin, deleteProduct);
+router.delete('/:id',isAdmin, isPremium, deleteProduct);
 
 
 export default router;

@@ -62,8 +62,14 @@ function updateProduct(req, res) {
 function deleteProduct(req, res) {
     try {
         const {id} = req.params
-        const product = deleteById(id);
-        res.status(200).json(product);
+        // Verifica si el usuario es premium o admin para permitir la eliminación
+        if (req.user.role === 'premium' || req.user.role === 'admin') {
+            const product = deleteById(id);
+            res.status(200).json(product);
+        } else {
+            // Si el usuario no es premium ni admin, devuelve un error 403
+            res.status(403).json({ message: 'Acceso no autorizado' });
+        }
     } catch (error) {
         ErrorClass.createError(errorMessages.PRODUCT_NOT_DELETED); 
     }
