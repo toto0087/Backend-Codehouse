@@ -2,6 +2,7 @@ import productsRouter from "./router/productsRouter.js"
 import cartsRotuer from "./router/cartsRouter.js"
 import viewsRouter from "./router/viewsRouter.js"
 import chatRouter from "./router/chatRouter.js"
+import emailRouter from "./router/emailRouter.js"
 import __dirname from "./utils.js";
 import "./db/config.js"
 import cookieParser from "cookie-parser";
@@ -61,6 +62,7 @@ app.use("/api/products",checkSession,productsRouter)
 app.use("/api/carts",checkSession,cartsRotuer)
 app.use('/api/sessions', sessionsRouter)
 app.use('/chat',checkSession,chatRouter)
+app.use('/api/send-email', emailRouter)
 app.get('/mockingproducts', (req, res) => {
   const mockProducts = generateMockProducts();
   res.json(mockProducts);

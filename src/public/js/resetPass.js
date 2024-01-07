@@ -1,7 +1,3 @@
-import {transporter} from "../../mailing/nodemailer.js";
-import { findByEmail } from "../../services/user.service.js";
-
-console.log(import.meta.url);
 const form = document.getElementById('resetForm');
 
 form.addEventListener('submit', async (e) => {
@@ -12,32 +8,28 @@ form.addEventListener('submit', async (e) => {
     const email = form['email'].value;
 
     try {
-        // Verifica si el usuario existe en la base de datos
-        const userExist = await findByEmail(email);
+        const response = await fetch('/api/send-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        });
+        const data = await response.json();
 
-        if (!userExist) {
-            // Si el usuario no existe, muestra un mensaje de error
+        if (!response.ok) {
             const error = document.querySelector('.error');
-            error.textContent = "El usuario no existe";
+            error.textContent = data.error;
             error.style.display = 'block';
-        } else {
-            // Si el usuario existe, envía el correo electrónico
-            const options = {
-                from: "tobisape5@gmail.com",
-                to: email,
-                subject: "Reset de contraseña",
-                text: "Este es un mensaje de prueba para el reseteo de contraseña."
-            };
-
-            await transporter.sendMail(options);
-            
-            // Puedes agregar aquí un mensaje de éxito o redireccionar a otra página si es necesario
-            console.log("Correo electrónico enviado con éxito");
-        }
+          } else {
+            const succes = document.querySelector('.success');
+            succes.textContent = "Mail enviado correctamente";
+            error.style.display = 'block';
+          }
+          
     } catch (error) {
-        // Manejar cualquier error que pueda ocurrir durante la operación asíncrona
-        console.error("Error:", error);
+        console.error('Error al realizar la solicitud:', error);
     }
+
+
 });
 
     // e.preventDefault();

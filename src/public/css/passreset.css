@@ -49,3 +49,9 @@ body {
     margin-bottom: 30px;
     display: none;
 }
+
+.success {
+    color: #4CAF50;
+    margin-bottom: 30px;
+    display: none;
+}
