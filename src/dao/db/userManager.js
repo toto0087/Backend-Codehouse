@@ -37,6 +37,10 @@ class UserManager extends BaseManager {
         }
     }
 
+    async findOne(query) {
+        return this.model.findOne(query);
+      }
+
 }
 
 

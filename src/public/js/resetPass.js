@@ -22,7 +22,7 @@ form.addEventListener('submit', async (e) => {
           } else {
             const succes = document.querySelector('.success');
             succes.textContent = "Mail enviado correctamente";
-            error.style.display = 'block';
+            succes.style.display = 'block';
           }
           
     } catch (error) {

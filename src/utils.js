@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'url'; 
 import { dirname } from 'path'; 
 import bcrypt from "bcrypt";
+import crypto from 'crypto';
   
  const __filename = fileURLToPath(import.meta.url); 
  const __dirname = dirname(__filename); 
@@ -28,3 +29,7 @@ export const compareData = async (data, hash) => {
 
    return uniqueCode;
 }
+
+export const generateResetToken = () => {
+   return crypto.randomBytes(20).toString('hex');
+ };

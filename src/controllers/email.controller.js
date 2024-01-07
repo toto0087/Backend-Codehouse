@@ -4,7 +4,7 @@ async function sendEmailController (req, res) {
     const email = req.body.email;
     console.log("email",email);
     try {
-        const emailSent = await sendEmailfunc(email);
+        const emailSent = await sendEmailfunc(email,req.headers.host);
         if ('error' in emailSent) {
             return res.status(404).json({ error: emailSent.error });
         }

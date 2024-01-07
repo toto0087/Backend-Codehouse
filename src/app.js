@@ -3,6 +3,7 @@ import cartsRotuer from "./router/cartsRouter.js"
 import viewsRouter from "./router/viewsRouter.js"
 import chatRouter from "./router/chatRouter.js"
 import emailRouter from "./router/emailRouter.js"
+import resetPasswordRouter from "./router/resetPasswordRouter.js"
 import __dirname from "./utils.js";
 import "./db/config.js"
 import cookieParser from "cookie-parser";
@@ -57,6 +58,7 @@ io.use(passportSocketIo.authorize({
 
 //routes
 app.use('/', viewsRouter)
+app.use('/reset-password', resetPasswordRouter)
 app.use('/api/users', usersRouter)
 app.use("/api/products",checkSession,productsRouter)
 app.use("/api/carts",checkSession,cartsRotuer)
