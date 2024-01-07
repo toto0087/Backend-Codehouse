@@ -32,7 +32,8 @@ const userSchema = new Schema({
     },
     role: {
         type: String,
-        default: 'user'
+        default: 'user',
+        enum: ['user', 'premium', 'admin']
     },
     from_github: {
         type: Boolean,

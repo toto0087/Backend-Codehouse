@@ -23,9 +23,24 @@ function getProductById(req, res) {
 
 function createProduct(req, res) {
     try {
-        const prod = req.body
-        const product = create(prod);
-        res.status(200).json(product); 
+
+        const { title, description, stock, price, code } = req.body;
+
+        let owner;
+
+        // Verifica si el usuario es premium 
+        if (req.user.role === 'premium') {
+            // Asigna el correo electrónico del usuario como owner
+            owner = req.user.email; 
+        } else {
+            // Si el usuario no es premium ni admin, se asigna por defecto "admin" como owner
+            owner = 'admin';
+        }
+
+        const product =  create({ title, description, stock, price, code, owner });
+
+        res.status(201).json(product);
+
 
     } catch (error) {
         ErrorClass.createError(errorMessages.PRODUCT_NOT_ADDED);
