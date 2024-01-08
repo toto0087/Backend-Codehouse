@@ -34,28 +34,30 @@ function getCartById(req, res) {
     }
 }
 
- function addProductCart(req, res) {
+ async function addProductCart(req, res) {
     const carritoId = req.params.cid;
     const productoId = req.params.pid;
 
-    console.log('REQ USER AQUI: ', req.user);
-    
+    const user = await findByCartId(carritoId);
+
     // User premium no puede agregar producto que le pertenece
-    if(req.user.role === 'premium') {
+    if(user.role === 'premium') {
         try {
-            const product = findProduct(productoId);
-    
+            const product = await findProduct(productoId);
             // Si el owner del producto es el mismo que el usuario que quiere agregarlo
-            if (product.owner === req.user.email) {
+            if (product.owner === user.email) {
+                console.log("ERROR POR SER EL MISMO OWNER");
                 ErrorClass.createError(errorMessages.CART_PRODUCT_NOT_ADDED);
+                return;
             }
         } catch (error) {
             console.error('Error al buscar el producto:', error);
+            return;
         }
     }
 
     try {
-        const cart = addProdCart(carritoId,productoId);
+        const cart = await addProdCart(carritoId,productoId);
         res.status(200).json(cart); 
     } catch (error) {
         ErrorClass.createError(errorMessages.CART_PRODUCT_NOT_ADDED);

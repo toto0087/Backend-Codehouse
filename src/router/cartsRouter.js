@@ -23,7 +23,7 @@ router.get('/', getCarts);
 router.get('/:id', getCartById);
 
 //Agregamos un producto al carrito
-router.post('/:cid/product/:pid',isAdmin ,addProductCart);
+router.post('/:cid/product/:pid' ,addProductCart);
         
 //Actualizamos el carrito
 router.put('/:cid', updateCart);

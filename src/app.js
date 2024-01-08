@@ -33,9 +33,11 @@ app.use(express.static(__dirname + "/public"));
 app.use(cookieParser('123456'));
 app.use(session({ 
    store:  MongoStore.create({mongoUrl:URI}), 
-   cookie: {maxAge: 60 * 60 * 1000 }, //1 hora
+   cookie: {maxAge: 60 * 60 * 1000, secure: false, sameSite: 'none' }, //1 hora
    secret: '123456',
-   name: 'connect.sid'
+   name: 'connect.sid',
+   resave: true,
+   saveUninitialized: true
   }))
 
   // Inicia el servidor en el puerto especificado

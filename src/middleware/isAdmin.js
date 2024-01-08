@@ -1,6 +1,7 @@
 function isAdmin(req, res, next) {
+
     // Verificar si el usuario tiene el rol de administrador
-    if (req.isAuthenticated() && req.user && req.user.role === 'admin' || req.user.role === 'premium') {
+    if ( req.user?.role === 'admin' || req.user?.role === 'premium') {
       console.log("User is admin or premium");
       return next(); // Si es administrador o premium, permite el acceso
     } else {
