@@ -6,7 +6,6 @@ import { getProducts,
         deleteProduct
 } from "../controllers/products.controller.js";
 import isAdmin from "../middleware/isAdmin.js";
-import isPremium from "../middleware/isPremium.js";
 
 const router = Router();
 
@@ -17,13 +16,13 @@ router.get('/', getProducts);
 router.get('/:id', getProductById);
 
 // Ruta para crear un nuevo carrito
-router.post('/',isAdmin, isPremium, createProduct);
+router.post('/', isAdmin, createProduct);
 
 // Ruta para actualizar un carrito
 router.put('/:id',isAdmin, updateProduct);
 
 // Ruta para eliminar un carrito
-router.delete('/:id',isAdmin, isPremium, deleteProduct);
+router.delete('/:id',isAdmin, deleteProduct);
 
 
 export default router;

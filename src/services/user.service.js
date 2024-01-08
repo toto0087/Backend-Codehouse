@@ -31,16 +31,19 @@ export const deleteById = (id) => {
     return userManager.deleteById(id);
 }
 
-export const toggleUserRole = async (uid) => {
+export const toggleUserRole = async (id) => {
     try {
-        const user = await userManager.findById(uid);
+
+        console.log(id);
+
+        const user = await userManager.findById(id);
 
         if (!user) {
             throw new Error('Usuario no encontrado');
         }
 
         // Cambia el rol según la lógica deseada
-        const updatedUser = user.role === 'user' ? await userManager.userToPremium(uid) : await userManager.userToRegular(uid);
+        const updatedUser = user.role === 'user' ? await userManager.userToPremium(id) : await userManager.userToRegular(id);
 
         return updatedUser;
     } catch (error) {

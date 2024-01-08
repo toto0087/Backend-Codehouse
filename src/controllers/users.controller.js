@@ -3,8 +3,8 @@ import { toggleUserRole } from '../services/user.service.js';
 async function userPremium(req, res) {
 
     try {
-        const { uid } = req.params;
-        const updatedUser = await toggleUserRole(uid);
+        const { id } = req.params;
+        const updatedUser = await toggleUserRole(id);
         res.status(200).json(updatedUser);
     } catch (error) {
         console.error('Error al cambiar el rol del usuario:', error);

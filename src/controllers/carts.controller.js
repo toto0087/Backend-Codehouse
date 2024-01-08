@@ -1,4 +1,5 @@
 import { findById ,create, update, deleteById, addProdCart,addCartPurchase,findAll } from "../services/carts.service.js";
+import { findById as findProduct } from "../services/products.service.js";
 import { findByCartId } from "../services/user.service.js";
 import {errorMessages } from "../errors/error.js";
 import ErrorClass from "../errors/staticError.js";
@@ -33,10 +34,24 @@ function getCartById(req, res) {
     }
 }
 
-function addProductCart(req, res) {
+async function addProductCart(req, res) {
     const carritoId = req.params.cid;
     const productoId = req.params.pid;
-    console.log(carritoId,productoId);
+    
+    // User premium no puede agregar producto que le pertenece
+    if(req.user.role === 'premium') {
+        try {
+            const product = await findProduct(productoId);
+    
+            // Si el owner del producto es el mismo que el usuario que quiere agregarlo
+            if (product.owner === req.user.email) {
+                ErrorClass.createError(errorMessages.CART_PRODUCT_NOT_ADDED);
+            }
+        } catch (error) {
+            console.error('Error al buscar el producto:', error);
+        }
+    }
+
     try {
         const cart = addProdCart(carritoId,productoId);
         res.status(200).json(cart); 
