@@ -10,14 +10,32 @@ function renderRealtimeProducts(req, res) {
 }
 
 function createRealtimeProduct (req, res) {
-    const {title,price,stock,code,description} = req.body
-    if(!title || !price || !description || !code || !stock ) 
-    return res.status(400).json({error:"Faltan datos"})
     try {
-        const createdProduct = create(req.body)   
-        res.status(200).json({message:"product created" , product:createdProduct})     
+
+        const { title, description, stock, price, code } = req.body;
+
+        let owner;
+
+        console.log("ACA EL ROL QUE TOMA: ",req.user.role);
+
+        // Verifica si el usuario es premium 
+        if (req.user.role === 'premium') {
+            console.log("entro en que si es premium");
+            // Asigna el correo electrónico del usuario como owner
+            owner = req.user.email; 
+        } else {
+            console.log("entro en que no es premium");
+            // Si el usuario no es premium ni admin, se asigna por defecto "admin" como owner
+            owner = 'admin';
+        }
+
+        const product =  create({ title, description, stock, price, code, owner });
+
+        res.status(201).json(product);
+
+
     } catch (error) {
-        req.status(500).json({error:"Error al crear el producto"})
+        ErrorClass.createError(errorMessages.PRODUCT_NOT_ADDED);
     }
 }
 

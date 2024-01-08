@@ -34,14 +34,16 @@ function getCartById(req, res) {
     }
 }
 
-async function addProductCart(req, res) {
+ function addProductCart(req, res) {
     const carritoId = req.params.cid;
     const productoId = req.params.pid;
+
+    console.log('REQ USER AQUI: ', req.user);
     
     // User premium no puede agregar producto que le pertenece
     if(req.user.role === 'premium') {
         try {
-            const product = await findProduct(productoId);
+            const product = findProduct(productoId);
     
             // Si el owner del producto es el mismo que el usuario que quiere agregarlo
             if (product.owner === req.user.email) {

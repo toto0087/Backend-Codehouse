@@ -8,6 +8,7 @@ import {createCart,
         addCartWithPurchase,
         getCarts
 } from "../controllers/carts.controller.js"
+import isAdmin from "../middleware/isAdmin.js";
 
 
 const router = Router();
@@ -22,7 +23,7 @@ router.get('/', getCarts);
 router.get('/:id', getCartById);
 
 //Agregamos un producto al carrito
-router.post('/:cid/product/:pid', addProductCart);
+router.post('/:cid/product/:pid',isAdmin ,addProductCart);
         
 //Actualizamos el carrito
 router.put('/:cid', updateCart);

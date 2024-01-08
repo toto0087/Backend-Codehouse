@@ -34,7 +34,8 @@ app.use(cookieParser('123456'));
 app.use(session({ 
    store:  MongoStore.create({mongoUrl:URI}), 
    cookie: {maxAge: 60 * 60 * 1000 }, //1 hora
-   secret: '123456'
+   secret: '123456',
+   name: 'connect.sid'
   }))
 
   // Inicia el servidor en el puerto especificado
