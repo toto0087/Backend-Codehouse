@@ -41,6 +41,24 @@ class UserManager extends BaseManager {
         return this.model.findOne(query);
       }
 
+
+    async updateUser(id, updates) {
+        try {
+            const user = await this.model.findByIdAndUpdate(id, updates, { new: true });
+            return user;
+        } catch (error) {
+            throw new Error(`Error al actualizar el usuario: ${error.message}`);
+        }
+    }
+    
+    async userToPremium(id) {
+        return this.updateUser(id, { role: 'premium' });
+    }
+    
+    async userToRegular(id) {
+        return this.updateUser(id, { role: 'user' });
+    }
+
 }
 
 

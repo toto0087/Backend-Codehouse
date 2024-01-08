@@ -12,9 +12,7 @@ class CartsManager extends BaseManager{
 
 
     addProdCart = async (carritoId,productoId) => {
-      console.log("ENTRO EN MANAGER");
-        console.log("carrito id: ",carritoId);
-        console.log("producto id: ",productoId);
+
         const carritos = await this.findAll();
 
         const carrito = carritos.find(c => c._id == carritoId);
