@@ -20,11 +20,9 @@ function createRealtimeProduct (req, res) {
 
         // Verifica si el usuario es premium 
         if (req.user.role === 'premium') {
-            console.log("entro en que si es premium");
             // Asigna el correo electrónico del usuario como owner
             owner = req.user.email; 
         } else {
-            console.log("entro en que no es premium");
             // Si el usuario no es premium ni admin, se asigna por defecto "admin" como owner
             owner = 'admin';
         }
