@@ -1,3 +1,96 @@
+paths:
+  /api/products:
+    get:
+      summary: Obtiene todos los productos
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Error de cliente 
+        '500':
+          description: Error del servidor
+
+    post:
+      summary: Crea un nuevo producto
+      security:
+        - session: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '201':
+          description: Creado
+        '400':
+          description: Error de cliente 
+        '500':
+          description: Error del servidor
+
+  /api/products/{id}:
+    get:
+      summary: Obtiene un producto por ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Error de cliente 
+        '500':
+          description: Error del servidor
+
+    put:
+      summary: Actualiza un producto
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      security:
+        - session: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Error de cliente 
+        '500':
+          description: Error del servidor
+
+    delete:
+      summary: Elimina un producto
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      security:
+        - session: []
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Error de cliente 
+        '403':
+          description: Acceso no autorizado
+        '500':
+          description: Error del servidor
+
+
+
 components:
   schemas:
     Product:
