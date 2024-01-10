@@ -22,6 +22,8 @@ import passportSocketIo from 'passport.socketio';
 import { Server as SocketIo } from 'socket.io';
 import generateMockProducts from "./mockTest/mockProducts.js";
 import {logger} from "./logs/winston.js"
+import { swaggerSetup } from "./swaggerSpecs.js"
+import swaggerUi from "swagger-ui-express"
 
 const app = express();
 const port = 3000; 
@@ -68,6 +70,7 @@ app.use("/api/carts",checkSession,cartsRotuer)
 app.use('/api/sessions', sessionsRouter)
 app.use('/chat',checkSession,chatRouter)
 app.use('/api/send-email', emailRouter)
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSetup));
 app.get('/mockingproducts', (req, res) => {
   const mockProducts = generateMockProducts();
   res.json(mockProducts);
