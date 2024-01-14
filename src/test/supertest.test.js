@@ -81,6 +81,38 @@ describe("Carts endpoint /", () => {
         });
     });
 
-    
+
+    describe("Session endpoint  /", () => {
+
+        describe("POST api/users/login", () => {
+            it("should authenticate with local strategy", async () => {
+                const response = await request
+                    .post("/api/users/login")
+                    .send({
+                    email: "tobisape5@gmail.com",
+                    password: "popo123",
+                    });
+                expect(response.status).to.eql(302);
+                expect(response.body).to.be.an("object");
+            });
+        });
+      
+        describe("GET /api/sessions/auth/github", () => {
+                it("should authenticate with Github strategy", async () => {
+                // Simular la autenticación de Github
+                const response = await request.get("/api/sessions/auth/github");
+                expect(response.status).to.eql(302); // Redirección después de la autenticación
+            });
+        });
+      
+        describe("GET /api/sessions/auth/google", () => {
+            it("should authenticate with Google strategy", async () => {
+                // Simular la autenticación de Google
+                const response = await request.get("/api/sessions/auth/google");
+                expect(response.status).to.eql(302); // Redirección después de la autenticación
+            });
+        });
+
+    });
 
 });
