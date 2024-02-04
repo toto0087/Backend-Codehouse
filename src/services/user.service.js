@@ -50,3 +50,41 @@ export const toggleUserRole = async (id) => {
         throw new Error(`Error al cambiar el rol del usuario: ${error.message}`);
     }
 }
+
+export const updateUserDocuments = async (userId, documentNames) => {
+    try {
+      // Buscar al usuario por su ID
+      const user = await userManager.findById(userId);
+  
+      if (!user) {
+        throw new Error('Usuario no encontrado');
+      }
+  
+      // Actualizar la información del usuario con los nombres de los documentos cargados
+      user.documents = documentNames;
+  
+      // Guardar los cambios en la base de datos
+      await user.save();
+  
+      return user;
+    } catch (error) {
+      throw new Error(`Error al actualizar documentos del usuario: ${error.message}`);
+    }
+  }
+
+  
+export const getUserDocuments = async (userId) => {
+    try {
+      // Buscar al usuario por su ID
+      const user = await userManager.findById(userId);
+  
+      if (!user) {
+        throw new Error('Usuario no encontrado');
+      }
+  
+      // Devolver los nombres de los documentos del usuario
+      return user.documents || [];
+    } catch (error) {
+      throw new Error(`Error al obtener documentos del usuario: ${error.message}`);
+    }
+  }
