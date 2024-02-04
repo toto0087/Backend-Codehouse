@@ -1,5 +1,15 @@
 import { model, Schema } from 'mongoose';
 
+const documentSchema = new Schema({
+    name: { type: String },
+    reference: { type: String }
+});
+
+const connectionSchema = new Schema({
+    date: { type: Date, default: Date.now },
+    action: { type: String, enum: ['login', 'logout'], required: true } 
+});
+
 const userSchema = new Schema({
     full_name: {
         type: String,
@@ -47,6 +57,8 @@ const userSchema = new Schema({
         type: Date,
         required: false
     },
+    documents: [documentSchema],
+    connections: [connectionSchema]
 }, {timestamps: true});
 
 
