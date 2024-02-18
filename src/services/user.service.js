@@ -88,3 +88,15 @@ export const getUserDocuments = async (userId) => {
       throw new Error(`Error al obtener documentos del usuario: ${error.message}`);
     }
   }
+
+  //borra todos los usuarios que no se conectaron en los ultimos 2 dias
+export const deleteInactive = async () => {
+    try {
+      const date = new Date();
+      date.setDate(date.getDate() - 2);
+  
+      await userManager.deleteMany({ lastConnection: { $lt: date } });
+    } catch (error) {
+      throw new Error(`Error al eliminar usuarios inactivos: ${error.message}`);
+    }
+  }

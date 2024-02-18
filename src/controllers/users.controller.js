@@ -1,4 +1,4 @@
-import { toggleUserRole, updateUserDocuments, getUserDocuments } from '../services/user.service.js';
+import { toggleUserRole, updateUserDocuments, getUserDocuments, findAll, deleteInactive} from '../services/user.service.js';
 
 
 const requiredDocuments = [
@@ -44,4 +44,35 @@ async function uploadDocuments(req, res) {
   }
 }
 
-export { userPremium, uploadDocuments };
+async function getUsers(req, res) {
+  try {
+    const users = await findAll();
+    res.status(200).json(users);
+  } catch (error) {
+    console.error('Error al obtener los usuarios:', error);
+    res.status(500).json({ error: 'Error al obtener los usuarios.' });
+  }
+}
+
+async function deleteUser(req, res) {
+  try {
+    const { id } = req.params;
+    await deleteById(id);
+    res.status(200).json({ message: 'Usuario eliminado exitosamente.' });
+  } catch (error) {
+    console.error('Error al eliminar el usuario:', error);
+    res.status(500).json({ error: 'Error al eliminar el usuario.' });
+  }
+}
+
+async function deleteInactiveUsers(req, res) {
+  try {
+    await deleteInactive();
+    res.status(200).json({ message: 'Usuarios inactivos eliminados exitosamente.' });
+  } catch (error) {
+    console.error('Error al eliminar usuarios inactivos:', error);
+    res.status(500).json({ error: 'Error al eliminar usuarios inactivos.' });
+  }
+}
+
+export { userPremium, uploadDocuments, getUsers, deleteUser, deleteInactiveUsers};

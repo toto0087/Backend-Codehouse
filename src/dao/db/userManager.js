@@ -59,6 +59,10 @@ class UserManager extends BaseManager {
         return this.updateUser(id, { role: 'user' });
     }
 
+    async deleteMany(query) {
+        return this.model.deleteMany(query);
+      }
+
 }
 
 

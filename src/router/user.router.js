@@ -1,10 +1,12 @@
 import {Router} from "express"
 import passport from "passport";
-import {userPremium} from "../controllers/users.controller.js"
+import {userPremium,getUsers,deleteInactiveUsers} from "../controllers/users.controller.js"
 
 const router = Router();
 
 router.put('/premium/:id', userPremium);
+router.get('/', getUsers)
+router.delete('/', deleteInactiveUsers);
 
 /////////////////////////// PASSPORT ///////////////////////////
 
