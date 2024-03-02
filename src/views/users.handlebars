@@ -1,0 +1,15 @@
+
+{{#each userList}}
+  <div class="user-card">
+    <h1>{{this.first_name}}</h1>
+    <p>{{this.last_name}}</p>
+    <p>{{this.email}}</p>
+    <p>{{this.role}}</p>
+    <div class="buttons">
+      <button class="edit-button">Edit</button>
+      <button class="delete-button">Delete</button>
+    </div>
+  </div>
+{{/each}}
+
+

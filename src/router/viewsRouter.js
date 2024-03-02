@@ -10,11 +10,11 @@ import {
     renderSignup,
     renderLogin,
     renderChat,
-    renderResetPass
+    renderResetPass,
+    renderUsers
 }
 from "../controllers/views.controller.js";
 import isAdmin from "../middleware/isAdmin.js";
-import isUserNotAdm from "../middleware/isUserNotAdm.js";
 
 const router = Router();
 
@@ -39,5 +39,8 @@ router.get('/chat',checkSession, renderChat);
 
 //PASS RESET
 router.get('/passreset', renderResetPass);
+
+//USERS
+router.get('/users', renderUsers);
 
 export default router;

@@ -1,4 +1,6 @@
 import { findAll , create, findById, update, deleteById } from "../services/products.service.js";
+import { findAll as findAllUsers } from "../services/user.service.js";
+import { usersModel } from "../dao/models/users.model.js";
 
 async function renderProducts(req, res) {
     const products = await findAll(req.query)
@@ -76,6 +78,16 @@ function renderResetPass(req, res) {
     res.render("passreset",{style:"passreset.css"})
 }
 
+async function renderUsers(req, res) {
+    usersModel.find({})
+        .lean()
+        .then((userList) => 
+        { res.render("users", 
+            {style:"users.css",userList: userList}
+        )}
+    );
+}
+
 export {
     renderProducts,
     renderRealtimeProducts,
@@ -86,5 +98,6 @@ export {
     renderSignup,
     renderLogin,
     renderChat,
-    renderResetPass
+    renderResetPass,
+    renderUsers
 }
