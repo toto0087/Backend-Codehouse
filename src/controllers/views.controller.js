@@ -1,5 +1,4 @@
 import { findAll , create, findById, update, deleteById } from "../services/products.service.js";
-import { findAll as findAllUsers } from "../services/user.service.js";
 import { usersModel } from "../dao/models/users.model.js";
 
 async function renderProducts(req, res) {
@@ -88,6 +87,10 @@ async function renderUsers(req, res) {
     );
 }
 
+function renderEditUser(req, res) {
+    res.render("edituser",{style:"edituser.css"})
+}
+
 export {
     renderProducts,
     renderRealtimeProducts,
@@ -99,5 +102,6 @@ export {
     renderLogin,
     renderChat,
     renderResetPass,
-    renderUsers
+    renderUsers,
+    renderEditUser
 }

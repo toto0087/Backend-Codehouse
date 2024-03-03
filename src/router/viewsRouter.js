@@ -11,7 +11,8 @@ import {
     renderLogin,
     renderChat,
     renderResetPass,
-    renderUsers
+    renderUsers,
+    renderEditUser
 }
 from "../controllers/views.controller.js";
 import isAdmin from "../middleware/isAdmin.js";
@@ -41,6 +42,8 @@ router.get('/chat',checkSession, renderChat);
 router.get('/passreset', renderResetPass);
 
 //USERS
-router.get('/users', renderUsers);
+router.get('/users',checkSession,isAdmin,renderUsers);
+
+
 
 export default router;
