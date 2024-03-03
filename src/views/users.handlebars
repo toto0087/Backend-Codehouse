@@ -6,10 +6,11 @@
     <p>{{this.email}}</p>
     <p>{{this.role}}</p>
     <div class="buttons">
-      <button class="edit-button">Edit</button>
-      <button class="delete-button">Delete</button>
+      <button class="edit-button" id="edit">Edit</button>
+      <button class="delete-button" data-id="{{this._id}}">Delete</button>
     </div>
   </div>
 {{/each}}
 
 
+<script src="/js/users.js"></script>

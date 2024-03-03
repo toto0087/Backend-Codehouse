@@ -71,6 +71,8 @@ app.use('/api/sessions', sessionsRouter)
 app.use('/chat',checkSession,chatRouter)
 app.use('/api/send-email', emailRouter)
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSetup));
+app.use('/users', usersRouter)
+
 app.get('/mockingproducts', (req, res) => {
   const mockProducts = generateMockProducts();
   res.json(mockProducts);

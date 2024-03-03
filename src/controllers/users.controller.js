@@ -1,4 +1,4 @@
-import { toggleUserRole, updateUserDocuments, getUserDocuments, findAll, deleteInactive} from '../services/user.service.js';
+import { toggleUserRole, updateUserDocuments, getUserDocuments, findAll, deleteInactive, deleteById} from '../services/user.service.js';
 
 
 const requiredDocuments = [
@@ -6,6 +6,8 @@ const requiredDocuments = [
   "Comprobante.pdf",
   "Estado de cuenta.pdf"
 ];
+
+
 
 
 async function userPremium(req, res) {

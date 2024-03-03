@@ -63,6 +63,15 @@ class UserManager extends BaseManager {
         return this.model.deleteMany(query);
       }
 
+    async deleteById(id) {
+        try {
+            await this.model.findByIdAndDelete(id);
+            return { message: 'Usuario eliminado exitosamente.' };
+        } catch (error) {
+            throw new Error(`Error al eliminar el usuario: ${error.message}`);
+        }
+    }
+
 }
 
 
